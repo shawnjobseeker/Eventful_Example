@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <group android:id="@+id/event" >
+        <item android:title="Past Events"
+            android:id="@+id/event_past" />
+        <item android:title="Future Events"
+            android:id="@+id/event_future" />
+        <item android:title="Artists"
+            android:id="@+id/artist" />
+        <item android:title="Venues"
+            android:id="@+id/venue" />
+    </group>
+</menu>

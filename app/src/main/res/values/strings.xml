@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">MockSongkick</string>
+
+    <!-- Strings related to login -->
+
+    <string name="facebook_app_id" >202371476866841</string>
+    <string name="action_settings">Log Out</string>
+    <string name="logged_in_as">Logged In As %1$s</string>
+    <string name="not_logged_in">Not Logged In</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+</resources>
