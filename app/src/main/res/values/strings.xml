@@ -9,5 +9,12 @@
     <string name="not_logged_in">Not Logged In</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBM4qkXDQmDGekF_O9VKwa7_IzywAdPyTE</string>
+<array name="search_array">
+    <item>Artist</item>
+    <item>Event</item>
+    <item>Venue</item>
+    <item>Location</item>
 
+</array>
 </resources>
