@@ -1,7 +1,6 @@
 package uk.co.theappexperts.shawn.loginapp;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -18,13 +17,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -42,7 +41,6 @@ import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
@@ -54,21 +52,23 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import uk.co.theappexperts.shawn.loginapp.contract.LocationPresenter;
-import uk.co.theappexperts.shawn.loginapp.model.EventHeader;
+import uk.co.theappexperts.shawn.loginapp.contract.ArtistPresenter;
+import uk.co.theappexperts.shawn.loginapp.contract.EventPresenter;
+import uk.co.theappexperts.shawn.loginapp.contract.IContract;
+import uk.co.theappexperts.shawn.loginapp.contract.VenuePresenter;
+import uk.co.theappexperts.shawn.loginapp.model.IData;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
+public class LoginActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
 
 
     // UI references.
@@ -88,6 +88,8 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
     ImageButton locationButton;
     @BindView(R.id.floating_action_button)
     FloatingActionButton floatingActionButton;
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
     private NavHeaderHolder holder;
     private Profile currentProfile;
     private GoogleApiClient google;
@@ -157,7 +159,7 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
-        toolbar.setLogo(R.drawable.powered_by_songkick_white);
+        toolbar.setLogo(R.drawable.eventful_logo);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         // initialize search view
@@ -170,15 +172,11 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (parent.getItemAtPosition(position).equals("Location") || parent.getItemAtPosition(position).equals("Venue")) {
+                if (parent.getItemAtPosition(position).equals(getString(R.string.venue))) {
                     locationButton.setVisibility(View.VISIBLE);
                     floatingActionButton.setVisibility(View.VISIBLE);
-                }
-                else if (parent.getItemAtPosition(position).equals("Event")) {
-                    editText.setHint("Search event by artist");
-                }
-                else {
-                    editText.setHint("Quick search");
+                } else {
+
                     locationButton.setVisibility(View.INVISIBLE);
                     floatingActionButton.setVisibility(View.INVISIBLE);
                 }
@@ -190,10 +188,16 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
                 locationButton.setVisibility(View.INVISIBLE);
             }
         });
-        locationButton.setOnClickListener(new View.OnClickListener() {
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new LocationPresenter().queryByGeo(currentLocation.getLatitude(), currentLocation.getLongitude());
+                Object item = spinner.getSelectedItem();
+               if (item.equals(getString(R.string.artist)))
+                   new ArtistPresenter(LoginActivity.this).query(editText.getText().toString());
+                else if (item.equals(getString(R.string.event)))
+                   new EventPresenter(LoginActivity.this).query(editText.getText().toString());
+                else if (item.equals(getString(R.string.venue)))
+                   new VenuePresenter(LoginActivity.this).query(editText.getText().toString());
             }
         });
         listIcon = ContextCompat.getDrawable(this, R.drawable.list);
@@ -205,9 +209,12 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
                 LoginActivity.this.onResume();
             }
         });
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
-
+    public <E extends IData> void passDataAdapter(List<E> list) {
+        recyclerView.setAdapter(new Adapter<E>(list, R.layout.row, this));
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

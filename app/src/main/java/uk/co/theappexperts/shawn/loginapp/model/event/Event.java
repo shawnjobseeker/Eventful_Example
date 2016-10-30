@@ -1,246 +1,107 @@
 package uk.co.theappexperts.shawn.loginapp.model.event;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import uk.co.theappexperts.shawn.loginapp.model.IData;
-import uk.co.theappexperts.shawn.loginapp.model.location.Location;
-import uk.co.theappexperts.shawn.loginapp.model.venue.Venue;
+import uk.co.theappexperts.shawn.loginapp.model.image.Image;
+
+/**
+ * Created by TheAppExperts on 30/10/2016.
+ */
 
 public class Event implements IData {
 
-    @SerializedName("location")
-    @Expose
-    private Location location;
-    @SerializedName("popularity")
-    @Expose
-    private Double popularity;
-    @SerializedName("uri")
-    @Expose
-    private String uri;
-    @SerializedName("displayName")
-    @Expose
-    private String displayName;
     @SerializedName("id")
     @Expose
-    private Integer id;
-    @SerializedName("type")
+    private String id;
+    @SerializedName("images")
     @Expose
-    private String type;
-    @SerializedName("start")
+    private Object images;
+    @SerializedName("image")
     @Expose
-    private Start start;
-    @SerializedName("ageRestriction")
+    private Image image;
+    @SerializedName("start_time")
     @Expose
-    private String ageRestriction;
-    @SerializedName("performance")
+    private String startTime;
+    @SerializedName("stop_time")
     @Expose
-    private List<Performance> performance = new ArrayList<Performance>();
-    @SerializedName("venue")
+    private Object stopTime;
+    @SerializedName("description")
     @Expose
-    private Venue venue;
-    @SerializedName("status")
+    private String description;
+    @SerializedName("title")
     @Expose
-    private String status;
+    private String title;
 
-    /**
-     *
-     * @return
-     * The location
-     */
-    public Location getLocation() {
-        return location;
+    public Image getImage() {
+        return image;
     }
 
-    /**
-     *
-     * @param location
-     * The location
-     */
-    public void setLocation(Location location) {
-        this.location = location;
+    public Object getImages() {
+        return images;
     }
 
-    /**
-     *
-     * @return
-     * The popularity
-     */
-    public Double getPopularity() {
-        return popularity;
+    public Object getStopTime() {
+        return stopTime;
     }
 
-    /**
-     *
-     * @param popularity
-     * The popularity
-     */
-    public void setPopularity(Double popularity) {
-        this.popularity = popularity;
+    public String getDescription() {
+        return description;
     }
 
-    /**
-     *
-     * @return
-     * The uri
-     */
-    public String getUri() {
-        return uri;
-    }
-
-    /**
-     *
-     * @param uri
-     * The uri
-     */
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
-    /**
-     *
-     * @return
-     * The displayName
-     */
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    /**
-     *
-     * @param displayName
-     * The displayName
-     */
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    /**
-     *
-     * @return
-     * The id
-     */
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    /**
-     *
-     * @param id
-     * The id
-     */
-    public void setId(Integer id) {
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setId(String id) {
         this.id = id;
     }
 
-    /**
-     *
-     * @return
-     * The type
-     */
-    public String getType() {
-        return type;
+    public void setImages(Object images) {
+        this.images = images;
     }
 
-    /**
-     *
-     * @param type
-     * The type
-     */
-    public void setType(String type) {
-        this.type = type;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    /**
-     *
-     * @return
-     * The start
-     */
-    public Start getStart() {
-        return start;
+    public void setStopTime(Object stopTime) {
+        this.stopTime = stopTime;
     }
 
-    /**
-     *
-     * @param start
-     * The start
-     */
-    public void setStart(Start start) {
-        this.start = start;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    /**
-     *
-     * @return
-     * The ageRestriction
-     */
-    public String getAgeRestriction() {
-        return ageRestriction;
+    @Override
+    public String getDesc() {
+        return description;
     }
 
-    /**
-     *
-     * @param ageRestriction
-     * The ageRestriction
-     */
-    public void setAgeRestriction(String ageRestriction) {
-        this.ageRestriction = ageRestriction;
+    @Override
+    public String getImageUrl() {
+        return image.getMedium().getUrl();
     }
 
-    /**
-     *
-     * @return
-     * The performance
-     */
-    public List<Performance> getPerformance() {
-        return performance;
+    @Override
+    public String getName() {
+        return title;
     }
-
-    /**
-     *
-     * @param performance
-     * The performance
-     */
-    public void setPerformance(List<Performance> performance) {
-        this.performance = performance;
-    }
-
-    /**
-     *
-     * @return
-     * The venue
-     */
-    public Venue getVenue() {
-        return venue;
-    }
-
-    /**
-     *
-     * @param venue
-     * The venue
-     */
-    public void setVenue(Venue venue) {
-        this.venue = venue;
-    }
-
-    /**
-     *
-     * @return
-     * The status
-     */
-    public String getStatus() {
-        return status;
-    }
-
-    /**
-     *
-     * @param status
-     * The status
-     */
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
 }

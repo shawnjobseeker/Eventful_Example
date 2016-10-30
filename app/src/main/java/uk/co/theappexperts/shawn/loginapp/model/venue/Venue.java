@@ -1,53 +1,249 @@
 package uk.co.theappexperts.shawn.loginapp.model.venue;
 
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import uk.co.theappexperts.shawn.loginapp.model.location.Location;
+import uk.co.theappexperts.shawn.loginapp.model.Comments;
+import uk.co.theappexperts.shawn.loginapp.model.IData;
+import uk.co.theappexperts.shawn.loginapp.model.Links;
+import uk.co.theappexperts.shawn.loginapp.model.Tags;
+import uk.co.theappexperts.shawn.loginapp.model.event.Events;
+import uk.co.theappexperts.shawn.loginapp.model.image.Images;
 
-public class Venue extends Location {
+public class Venue implements IData {
 
+    @SerializedName("withdrawn")
+    @Expose
+    private String withdrawn;
+    @SerializedName("children")
+    @Expose
+    private Object children;
+    @SerializedName("comments")
+    @Expose
+    private Comments comments;
+    @SerializedName("region_abbr")
+    @Expose
+    private String regionAbbr;
+    @SerializedName("postal_code")
+    @Expose
+    private String postalCode;
+    @SerializedName("latitude")
+    @Expose
+    private String latitude;
+    @SerializedName("url")
+    @Expose
+    private String url;
     @SerializedName("id")
     @Expose
-    private Integer id;
-    @SerializedName("displayName")
+    private String id;
+    @SerializedName("address")
     @Expose
-    private String displayName;
-    @SerializedName("uri")
+    private String address;
+    @SerializedName("metro")
     @Expose
-    private String uri;
-    @SerializedName("street")
+    private String metro;
+    @SerializedName("links")
     @Expose
-    private String street;
-    @SerializedName("zip")
+    private Links links;
+    @SerializedName("images")
     @Expose
-    private String zip;
-    @SerializedName("lat")
+    private Images images;
+    @SerializedName("withdrawn_note")
     @Expose
-    private Double lat;
-    @SerializedName("lng")
+    private Object withdrawnNote;
+    @SerializedName("longitude")
     @Expose
-    private Double lng;
-    @SerializedName("phone")
+    private String longitude;
+    @SerializedName("country_abbr")
     @Expose
-    private String phone;
-    @SerializedName("website")
+    private String countryAbbr;
+    @SerializedName("name")
     @Expose
-    private String website;
-    @SerializedName("capacity")
+    private String name;
+    @SerializedName("region")
     @Expose
-    private Integer capacity;
+    private String region;
     @SerializedName("description")
     @Expose
     private String description;
+    @SerializedName("properties")
+    @Expose
+    private Object properties;
+    @SerializedName("modified")
+    @Expose
+    private String modified;
+    @SerializedName("venue_display")
+    @Expose
+    private String venueDisplay;
+    @SerializedName("parents")
+    @Expose
+    private Object parents;
+    @SerializedName("geocode_type")
+    @Expose
+    private String geocodeType;
+    @SerializedName("tz_olson_path")
+    @Expose
+    private String tzOlsonPath;
+    @SerializedName("city")
+    @Expose
+    private String city;
+    @SerializedName("trackbacks")
+    @Expose
+    private Object trackbacks;
+    @SerializedName("country_name")
+    @Expose
+    private String country;
+    @SerializedName("owner")
+    @Expose
+    private String owner;
+    @SerializedName("country_abbr2")
+    @Expose
+    private String countryAbbr2;
+    @SerializedName("tags")
+    @Expose
+    private Tags tags;
+    @SerializedName("venue_type")
+    @Expose
+    private String venueType;
+    @SerializedName("created")
+    @Expose
+    private String created;
+    @SerializedName("events")
+    @Expose
+    private Events events;
+
+    /**
+     *
+     * @return
+     * The withdrawn
+     */
+    public String getWithdrawn() {
+        return withdrawn;
+    }
+
+    /**
+     *
+     * @param withdrawn
+     * The withdrawn
+     */
+    public void setWithdrawn(String withdrawn) {
+        this.withdrawn = withdrawn;
+    }
+
+    /**
+     *
+     * @return
+     * The children
+     */
+    public Object getChildren() {
+        return children;
+    }
+
+    /**
+     *
+     * @param children
+     * The children
+     */
+    public void setChildren(Object children) {
+        this.children = children;
+    }
+
+    /**
+     *
+     * @return
+     * The comments
+     */
+    public Comments getComments() {
+        return comments;
+    }
+
+    /**
+     *
+     * @param comments
+     * The comments
+     */
+    public void setComments(Comments comments) {
+        this.comments = comments;
+    }
+
+    /**
+     *
+     * @return
+     * The regionAbbr
+     */
+    public String getRegionAbbr() {
+        return regionAbbr;
+    }
+
+    /**
+     *
+     * @param regionAbbr
+     * The region_abbr
+     */
+    public void setRegionAbbr(String regionAbbr) {
+        this.regionAbbr = regionAbbr;
+    }
+
+    /**
+     *
+     * @return
+     * The postalCode
+     */
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    /**
+     *
+     * @param postalCode
+     * The postal_code
+     */
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    /**
+     *
+     * @return
+     * The latitude
+     */
+    public String getLatitude() {
+        return latitude;
+    }
+
+    /**
+     *
+     * @param latitude
+     * The latitude
+     */
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    /**
+     *
+     * @return
+     * The url
+     */
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     *
+     * @param url
+     * The url
+     */
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     /**
      *
      * @return
      * The id
      */
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
@@ -56,172 +252,170 @@ public class Venue extends Location {
      * @param id
      * The id
      */
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     /**
      *
      * @return
-     * The displayName
+     * The address
      */
-    public String getDisplayName() {
-        return displayName;
+    public String getAddress() {
+        return address;
     }
 
     /**
      *
-     * @param displayName
-     * The displayName
+     * @param address
+     * The address
      */
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-
-
-    /**
-     *
-     * @return
-     * The uri
-     */
-    public String getUri() {
-        return uri;
-    }
-
-    /**
-     *
-     * @param uri
-     * The uri
-     */
-    public void setUri(String uri) {
-        this.uri = uri;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     /**
      *
      * @return
-     * The street
+     * The metro
      */
-    public String getStreet() {
-        return street;
+    public String getMetro() {
+        return metro;
     }
 
     /**
      *
-     * @param street
-     * The street
+     * @param metro
+     * The metro
      */
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    /**
-     *
-     * @return
-     * The zip
-     */
-    public String getZip() {
-        return zip;
-    }
-
-    /**
-     *
-     * @param zip
-     * The zip
-     */
-    public void setZip(String zip) {
-        this.zip = zip;
+    public void setMetro(String metro) {
+        this.metro = metro;
     }
 
     /**
      *
      * @return
-     * The lat
+     * The links
      */
-    public Double getLat() {
-        return lat;
+    public Links getLinks() {
+        return links;
     }
 
     /**
      *
-     * @param lat
-     * The lat
+     * @param links
+     * The links
      */
-    public void setLat(Double lat) {
-        this.lat = lat;
-    }
-
-    /**
-     *
-     * @return
-     * The lng
-     */
-    public Double getLng() {
-        return lng;
-    }
-
-    /**
-     *
-     * @param lng
-     * The lng
-     */
-    public void setLng(Double lng) {
-        this.lng = lng;
+    public void setLinks(Links links) {
+        this.links = links;
     }
 
     /**
      *
      * @return
-     * The phone
+     * The images
      */
-    public String getPhone() {
-        return phone;
+    public Images getImages() {
+        return images;
     }
 
     /**
      *
-     * @param phone
-     * The phone
+     * @param images
+     * The images
      */
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    /**
-     *
-     * @return
-     * The website
-     */
-    public String getWebsite() {
-        return website;
-    }
-
-    /**
-     *
-     * @param website
-     * The website
-     */
-    public void setWebsite(String website) {
-        this.website = website;
+    public void setImages(Images images) {
+        this.images = images;
     }
 
     /**
      *
      * @return
-     * The capacity
+     * The withdrawnNote
      */
-    public Integer getCapacity() {
-        return capacity;
+    public Object getWithdrawnNote() {
+        return withdrawnNote;
     }
 
     /**
      *
-     * @param capacity
-     * The capacity
+     * @param withdrawnNote
+     * The withdrawn_note
      */
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
+    public void setWithdrawnNote(Object withdrawnNote) {
+        this.withdrawnNote = withdrawnNote;
+    }
+
+    /**
+     *
+     * @return
+     * The longitude
+     */
+    public String getLongitude() {
+        return longitude;
+    }
+
+    /**
+     *
+     * @param longitude
+     * The longitude
+     */
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    /**
+     *
+     * @return
+     * The countryAbbr
+     */
+    public String getCountryAbbr() {
+        return countryAbbr;
+    }
+
+    /**
+     *
+     * @param countryAbbr
+     * The country_abbr
+     */
+    public void setCountryAbbr(String countryAbbr) {
+        this.countryAbbr = countryAbbr;
+    }
+
+    /**
+     *
+     * @return
+     * The name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     *
+     * @param name
+     * The name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     *
+     * @return
+     * The region
+     */
+    public String getRegion() {
+        return region;
+    }
+
+    /**
+     *
+     * @param region
+     * The region
+     */
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     /**
@@ -242,4 +436,283 @@ public class Venue extends Location {
         this.description = description;
     }
 
+    /**
+     *
+     * @return
+     * The properties
+     */
+    public Object getProperties() {
+        return properties;
+    }
+
+    /**
+     *
+     * @param properties
+     * The properties
+     */
+    public void setProperties(Object properties) {
+        this.properties = properties;
+    }
+
+    /**
+     *
+     * @return
+     * The modified
+     */
+    public String getModified() {
+        return modified;
+    }
+
+    /**
+     *
+     * @param modified
+     * The modified
+     */
+    public void setModified(String modified) {
+        this.modified = modified;
+    }
+
+    /**
+     *
+     * @return
+     * The venueDisplay
+     */
+    public String getVenueDisplay() {
+        return venueDisplay;
+    }
+
+    /**
+     *
+     * @param venueDisplay
+     * The venue_display
+     */
+    public void setVenueDisplay(String venueDisplay) {
+        this.venueDisplay = venueDisplay;
+    }
+
+    /**
+     *
+     * @return
+     * The parents
+     */
+    public Object getParents() {
+        return parents;
+    }
+
+    /**
+     *
+     * @param parents
+     * The parents
+     */
+    public void setParents(Object parents) {
+        this.parents = parents;
+    }
+
+    /**
+     *
+     * @return
+     * The geocodeType
+     */
+    public String getGeocodeType() {
+        return geocodeType;
+    }
+
+    /**
+     *
+     * @param geocodeType
+     * The geocode_type
+     */
+    public void setGeocodeType(String geocodeType) {
+        this.geocodeType = geocodeType;
+    }
+
+    /**
+     *
+     * @return
+     * The tzOlsonPath
+     */
+    public String getTzOlsonPath() {
+        return tzOlsonPath;
+    }
+
+    /**
+     *
+     * @param tzOlsonPath
+     * The tz_olson_path
+     */
+    public void setTzOlsonPath(String tzOlsonPath) {
+        this.tzOlsonPath = tzOlsonPath;
+    }
+
+    /**
+     *
+     * @return
+     * The city
+     */
+    public String getCity() {
+        return city;
+    }
+
+    /**
+     *
+     * @param city
+     * The city
+     */
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    /**
+     *
+     * @return
+     * The trackbacks
+     */
+    public Object getTrackbacks() {
+        return trackbacks;
+    }
+
+    /**
+     *
+     * @param trackbacks
+     * The trackbacks
+     */
+    public void setTrackbacks(Object trackbacks) {
+        this.trackbacks = trackbacks;
+    }
+
+    /**
+     *
+     * @return
+     * The country
+     */
+    public String getCountry() {
+        return country;
+    }
+
+    /**
+     *
+     * @param country
+     * The country
+     */
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    /**
+     *
+     * @return
+     * The owner
+     */
+    public String getOwner() {
+        return owner;
+    }
+
+    /**
+     *
+     * @param owner
+     * The owner
+     */
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    /**
+     *
+     * @return
+     * The countryAbbr2
+     */
+    public String getCountryAbbr2() {
+        return countryAbbr2;
+    }
+
+    /**
+     *
+     * @param countryAbbr2
+     * The country_abbr2
+     */
+    public void setCountryAbbr2(String countryAbbr2) {
+        this.countryAbbr2 = countryAbbr2;
+    }
+
+    /**
+     *
+     * @return
+     * The tags
+     */
+    public Tags getTags() {
+        return tags;
+    }
+
+    /**
+     *
+     * @param tags
+     * The tags
+     */
+    public void setTags(Tags tags) {
+        this.tags = tags;
+    }
+
+    /**
+     *
+     * @return
+     * The venueType
+     */
+    public String getVenueType() {
+        return venueType;
+    }
+
+    /**
+     *
+     * @param venueType
+     * The venue_type
+     */
+    public void setVenueType(String venueType) {
+        this.venueType = venueType;
+    }
+
+    /**
+     *
+     * @return
+     * The created
+     */
+    public String getCreated() {
+        return created;
+    }
+
+    /**
+     *
+     * @param created
+     * The created
+     */
+    public void setCreated(String created) {
+        this.created = created;
+    }
+
+    /**
+     *
+     * @return
+     * The events
+     */
+    public Events getEvents() {
+        return events;
+    }
+
+    /**
+     *
+     * @param events
+     * The events
+     */
+    public void setEvents(Events events) {
+        this.events = events;
+    }
+
+    @Override
+    public String getDesc() {
+        return description;
+    }
+
+    @Override
+    public String getImageUrl() {
+        return images.getImage().getUrl();
+    }
 }

@@ -1,20 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MockSongkick</string>
+    <string name="app_name">MockEventful</string>
 
     <!-- Strings related to login -->
 
     <string name="facebook_app_id" >202371476866841</string>
-    <string name="action_settings">Log Out</string>
     <string name="logged_in_as">Logged In As %1$s</string>
     <string name="not_logged_in">Not Logged In</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBM4qkXDQmDGekF_O9VKwa7_IzywAdPyTE</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyBM4qkXDQmDGekF_O9VKwa7_IzywAdPyTE</string>
+    <string name="quick_search">Quick Search</string>
+    <string name="search_event">Search event by artist</string>
+    <string name="artist">Artist</string>
+    <string name="event">Event</string>
+    <string name="venue">Venue</string>
+    <string name="unable_to_connect">Unable to connect: </string>
+    <string name="connection_unauthorised">Connection unauthorised</string>
+    <string name="login_successful">Login successful</string>
+    <string name="im_going">I\'m going</string>
 <array name="search_array">
-    <item>Artist</item>
-    <item>Event</item>
-    <item>Venue</item>
-    <item>Location</item>
+    <item>@string/artist</item>
+    <item>@string/event</item>
+    <item>@string/venue</item>
 
 </array>
 </resources>
