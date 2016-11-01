@@ -19,10 +19,85 @@
     <string name="connection_unauthorised">Connection unauthorised</string>
     <string name="login_successful">Login successful</string>
     <string name="im_going">I\'m going</string>
+    <string name="page">Page</string>
+    <string name="page_of">of %1$d</string>
+    <string name="loading">Loading...</string>
+    <string name="keywords">Search terms</string>
+    <string name="within_current">within current location</string>
+    <string name="location">Or enter location</string>
+    <string name="mi">mi</string>
+    <string name="km">km</string>
+    <string name="categories">Categories</string>
+    <string name="music">Concerts &amp; Tour Dates</string>
+    <string name="conference">Conferences &amp; Tradeshows</string>
+    <string name="comedy">Comedy</string>
+    <string name="learning_education">Education</string>
+    <string name="family_fun_kids">Kids &amp; Family</string>
+    <string name="festivals_parades">Festivals</string>
+    <string name="movies_film">Film</string>
+    <string name="food">Food &amp; Wine</string>
+    <string name="fundraisers">Fundraising &amp; Charity</string>
+    <string name="art">Art Galleries &amp; Exhibits</string>
+    <string name="support">Health &amp; Wellness</string>
+    <string name="holiday">Holiday</string>
+    <string name="books">Books</string>
+    <string name="attractions">Museums &amp; Attractions</string>
+    <string name="community">Neighborhood</string>
+    <string name="business">Business &amp; Networking</string>
+    <string name="singles_social">Nightlife &amp; Singles</string>
+    <string name="schools_alumni">University &amp; Alumni</string>
+    <string name="clubs_associations">Organizations &amp; Meetups</string>
+    <string name="outdoors_recreation">Outdoors &amp; Recreation</string>
+    <string name="performing_arts">Performing Arts</string>
+    <string name="animals">Pets</string>
+    <string name="politics_activism">Politics &amp; Activism</string>
+    <string name="sales">Sales &amp; Retail</string>
+    <string name="science">Science</string>
+    <string name="religion_spirituality">Religion &amp; Spirituality</string>
+    <string name="sports">Sports</string>
+    <string name="technology">Technology</string>
+    <string name="other">Other &amp; Miscellaneous</string>
+    <!-- extracted all categories from API because multi-language not supported by API-->
 <array name="search_array">
     <item>@string/artist</item>
     <item>@string/event</item>
     <item>@string/venue</item>
 
 </array>
+    <array name="units">
+        <item>@string/mi</item>
+        <item>@string/km</item>
+    </array>
+
+    <array name="categories_array">
+        <item>@string/music</item>
+        <item>@string/conference</item>
+        <item>@string/comedy</item>
+        <item>@string/learning_education</item>
+        <item>@string/family_fun_kids</item>
+        <item>@string/festivals_parades</item>
+        <item>@string/movies_film</item>
+        <item>@string/food</item>
+        <item>@string/fundraisers</item>
+        <item>@string/art</item>
+        <item>@string/support</item>
+        <item>@string/holiday</item>
+        <item>@string/books</item>
+        <item>@string/attractions</item>
+        <item>@string/community</item>
+        <item>@string/business</item>
+        <item>@string/singles_social</item>
+        <item>@string/schools_alumni</item>
+        <item>@string/clubs_associations</item>
+        <item>@string/outdoors_recreation</item>
+        <item>@string/performing_arts</item>
+        <item>@string/animals</item>
+        <item>@string/politics_activism</item>
+        <item>@string/sales</item>
+        <item>@string/science</item>
+        <item>@string/religion_spirituality</item>
+        <item>@string/sports</item>
+        <item>@string/technology</item>
+        <item>@string/other</item>
+    </array>
 </resources>

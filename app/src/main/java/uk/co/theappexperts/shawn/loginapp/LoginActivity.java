@@ -1,5 +1,6 @@
 package uk.co.theappexperts.shawn.loginapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -28,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,6 +65,8 @@ import uk.co.theappexperts.shawn.loginapp.contract.EventPresenter;
 import uk.co.theappexperts.shawn.loginapp.contract.IContract;
 import uk.co.theappexperts.shawn.loginapp.contract.VenuePresenter;
 import uk.co.theappexperts.shawn.loginapp.model.IData;
+import uk.co.theappexperts.shawn.loginapp.model.event.Event;
+import uk.co.theappexperts.shawn.loginapp.model.venue.Venue;
 
 /**
  * A login screen that offers login via email/password.
@@ -90,6 +94,8 @@ public class LoginActivity extends AppCompatActivity implements
     FloatingActionButton floatingActionButton;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    @BindView(R.id.page_toggle_view)
+    LinearLayout pageToggleView;
     private NavHeaderHolder holder;
     private Profile currentProfile;
     private GoogleApiClient google;
@@ -99,6 +105,8 @@ public class LoginActivity extends AppCompatActivity implements
     private GoogleMap map;
     private Bundle savedInstanceState;
     private  SupportMapFragment fragment;
+    private ProgressDialog dialog;
+    private List<? extends IData> list;
     private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
@@ -121,7 +129,7 @@ public class LoginActivity extends AppCompatActivity implements
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
-
+    private IContract.IPresenter presenter;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -172,13 +180,13 @@ public class LoginActivity extends AppCompatActivity implements
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (parent.getItemAtPosition(position).equals(getString(R.string.venue))) {
-                    locationButton.setVisibility(View.VISIBLE);
-                    floatingActionButton.setVisibility(View.VISIBLE);
-                } else {
-
+                if (parent.getItemAtPosition(position).equals(getString(R.string.artist))) {
                     locationButton.setVisibility(View.INVISIBLE);
                     floatingActionButton.setVisibility(View.INVISIBLE);
+                } else {
+
+                    locationButton.setVisibility(View.VISIBLE);
+                    floatingActionButton.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -188,18 +196,8 @@ public class LoginActivity extends AppCompatActivity implements
                 locationButton.setVisibility(View.INVISIBLE);
             }
         });
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Object item = spinner.getSelectedItem();
-               if (item.equals(getString(R.string.artist)))
-                   new ArtistPresenter(LoginActivity.this).query(editText.getText().toString());
-                else if (item.equals(getString(R.string.event)))
-                   new EventPresenter(LoginActivity.this).query(editText.getText().toString());
-                else if (item.equals(getString(R.string.venue)))
-                   new VenuePresenter(LoginActivity.this).query(editText.getText().toString());
-            }
-        });
+        button.setOnClickListener(new SearchItemClick());
+        locationButton.setOnClickListener(new LocationClick());
         listIcon = ContextCompat.getDrawable(this, R.drawable.list);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,10 +208,23 @@ public class LoginActivity extends AppCompatActivity implements
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        dialog = new ProgressDialog(this);
 
     }
-    public <E extends IData> void passDataAdapter(List<E> list) {
-        recyclerView.setAdapter(new Adapter<E>(list, R.layout.row, this));
+    public <E extends IData> void passDataAdapter(List<E> list, int pageCount, int pageNumber) {
+
+        this.list = list;
+        if (list != null) {
+            recyclerView.setAdapter(new Adapter<E>(list, R.layout.row, this));
+            pageToggleView.setVisibility(View.VISIBLE);
+            ((PageToggleView)pageToggleView).setPresenter(presenter);
+            ((PageToggleView)pageToggleView).setPage(pageCount, pageNumber);
+        }
+
+        if (dialog.isShowing())
+        dialog.dismiss();
+        if (mapEnabled)
+            onMapReady(map);
     }
     @Override
     protected void onDestroy() {
@@ -254,6 +265,9 @@ public class LoginActivity extends AppCompatActivity implements
             transaction.commit();
             floatingActionButton.setImageDrawable(ContextCompat.getDrawable(LoginActivity.this, android.R.drawable.ic_dialog_map));
         }
+        if (editText.getText().length() > 0) {
+            new SearchItemClick().onClick(null);
+        }
 
 
     }
@@ -287,6 +301,7 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean("mapEnabled", mapEnabled);
+        outState.putInt("spinner_selectedItemPosition", spinner.getSelectedItemPosition());
         if (currentLocation != null) {
             outState.putDouble("latitude", currentLocation.getLatitude());
             outState.putDouble("longitude", currentLocation.getLongitude());
@@ -298,6 +313,7 @@ public class LoginActivity extends AppCompatActivity implements
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState != null) {
             mapEnabled = savedInstanceState.getBoolean("mapEnabled");
+            spinner.setSelection(savedInstanceState.getInt("spinner_selectedItemPosition"));
             this.savedInstanceState = savedInstanceState;
         }
     }
@@ -331,6 +347,8 @@ public class LoginActivity extends AppCompatActivity implements
             currentLocation = LocationServices.FusedLocationApi.getLastLocation(google);
             savedInstanceState.putDouble("latitude", currentLocation.getLatitude());
             savedInstanceState.putDouble("longitude", currentLocation.getLongitude());
+            if (locationButton.getVisibility() == View.VISIBLE)
+                new LocationClick().onClick(null);
         } catch(SecurityException e) {
             onConnectionFailed(new ConnectionResult(ConnectionResult.SERVICE_MISSING_PERMISSION, null, "Connection unauthorised."));
         }
@@ -347,7 +365,7 @@ public class LoginActivity extends AppCompatActivity implements
         Toast.makeText(this, "Unable to connect: " + connectionResult.getErrorMessage(), Toast.LENGTH_LONG).show();
     }
 
-    class NavHeaderHolder {
+     class NavHeaderHolder {
         @BindView(R.id.login)
         LoginButton login;
         @BindView(R.id.profile_pic)
@@ -370,6 +388,39 @@ public class LoginActivity extends AppCompatActivity implements
             profilePic.setVisibility(View.VISIBLE);
         }
     }
+    private class SearchItemClick implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Object item = spinner.getSelectedItem();
+            if (item.equals(getString(R.string.artist)))
+                presenter = new ArtistPresenter(LoginActivity.this);
+            else if (item.equals(getString(R.string.event)))
+                presenter = new EventPresenter(LoginActivity.this);
+            else if (item.equals(getString(R.string.venue)))
+                presenter = new VenuePresenter(LoginActivity.this);
+            presenter.setQuery(editText.getText().toString());
+            presenter.query();
+            LoginActivity.this.showProgressDialog();
+        }
+    }
+    private class LocationClick implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Object item = spinner.getSelectedItem();
+            if (item.equals(getString(R.string.event)))
+                presenter = new EventPresenter(LoginActivity.this);
+            else if (item.equals(getString(R.string.venue)))
+                presenter = new VenuePresenter(LoginActivity.this);
+            if (presenter instanceof EventPresenter)
+                ((EventPresenter)presenter).setLocation(currentLocation.getLatitude() + "," + currentLocation.getLongitude());
+            else if ( presenter instanceof VenuePresenter)
+                ((VenuePresenter)presenter).setLocation(currentLocation.getLatitude() + "," + currentLocation.getLongitude());
+            presenter.query();
+
+        }
+    }
+
     protected void onStop() {
         if (google != null && google.isConnected())
         google.disconnect();
@@ -394,18 +445,48 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        double lat, lng;
-        if (currentLocation == null) {
-            lat = savedInstanceState.getDouble("latitude");
-            lng = savedInstanceState.getDouble("longitude");
+        Event event;
+        Venue venue;
+        double sumLat = 0, sumLong = 0;
+        int count = list.size();
+        MarkerOptions option = new MarkerOptions();
+        for (int i = 0; i < list.size(); i++) {
+            double lat = 0, lng = 0;
+            if (list.get(i) instanceof Event) {
+                event = (Event)list.get(i);
+                 lat = Double.parseDouble(event.getLatitude());
+                 lng = Double.parseDouble(event.getLongitude());
+                addMarker(lat, lng, option, event);
+            }
+            else if (list.get(i) instanceof Venue) {
+                venue = (Venue)list.get(i);
+                 lat = Double.parseDouble(venue.getLatitude());
+                 lng = Double.parseDouble(venue.getLongitude());
+                addMarker(lat, lng, option, venue);
+            }
+            else
+                count -= 1;
+            sumLat += lat;
+            sumLong += lng;
+
         }
-        else {
-            lat = currentLocation.getLatitude();
-            lng = currentLocation.getLongitude();
-        }
-            LatLng mark = new LatLng(lat, lng);
-            map.addMarker(new MarkerOptions().position(mark));
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(mark, 14));
+        double avgLat = sumLat / count;
+        double avgLong = sumLong / count;
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 11));
     }
+    private void addMarker(double lat, double lng, MarkerOptions option, Object iData) {
+        String title = "";
+        if (iData instanceof IData)
+            title = ((IData)iData).getName();
+        LatLng mark = new LatLng(lat, lng);
+        map.addMarker(option.position(mark).title(title));
+    }
+     void showProgressDialog() {
+         if (dialog == null)
+             dialog = new ProgressDialog(this);
+         dialog.setMessage(getString(R.string.loading));
+         dialog.show();
+     }
+
 }
 

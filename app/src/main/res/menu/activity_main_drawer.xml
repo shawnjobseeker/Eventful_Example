@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/detail">
+        <item
+            android:title="menu1"
+            android:enabled="false"
+            android:checkable="false"
+            android:id="@+id/detail_search">
+        </item>
+        <item
+            android:title="opt1"
+            android:id="@+id/event">
+        </item>
+        <item
+            android:title="opt2"
+            android:id="@+id/venue">
+        </item>
+    </group>
+    <group android:id="@+id/my">
+        <item
+            android:title="menu2"
+            android:enabled="false"
+            android:checkable="false"
+            android:id="@+id/my_events">
+        </item>
 
-
-    <group android:id="@+id/event" >
-        <item android:title="Past Events"
-            android:id="@+id/event_past" />
-        <item android:title="Future Events"
-            android:id="@+id/event_future" />
-        <item android:title="Artists"
-            android:id="@+id/artist" />
-        <item android:title="Venues"
-            android:id="@+id/venue" />
+        <item
+            android:title="opt4"
+            android:id="@+id/near">
+        </item>
+        <item
+            android:title="opt5"
+            android:id="@+id/going">
+        </item>
     </group>
 </menu>
