@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -99,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements
     private NavHeaderHolder holder;
     private Profile currentProfile;
     private GoogleApiClient google;
-    private Location currentLocation;
+     Location currentLocation;
     private boolean mapEnabled;
     private Drawable listIcon;
     private GoogleMap map;
@@ -129,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
-    private IContract.IPresenter presenter;
+     IContract.IPresenter presenter;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -250,13 +251,14 @@ public class LoginActivity extends AppCompatActivity implements
         if (Profile.getCurrentProfile() != null)
         currentProfile = Profile.getCurrentProfile();
         updateLogin();
+        if (getSupportFragmentManager().findFragmentByTag("Search") == null)
         floatingActionButton.bringToFront();
         if (fragment == null)
          fragment = new SupportMapFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (mapEnabled) {
             floatingActionButton.setImageDrawable(listIcon);
-            transaction.replace(R.id.content_main, fragment);
+            transaction.replace(R.id.content_main, fragment, "Map");
             transaction.commit();
             fragment.getMapAsync(LoginActivity.this);
         }
@@ -268,6 +270,8 @@ public class LoginActivity extends AppCompatActivity implements
         if (editText.getText().length() > 0) {
             new SearchItemClick().onClick(null);
         }
+
+
 
 
     }
@@ -332,12 +336,29 @@ public class LoginActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        String title = item.getTitle().toString();
+        if (title.equals(getString(R.string.artist)))
+            spinner.setSelection(0);
+        else if (title.equals(getString(R.string.event)))
+            spinner.setSelection(1);
+        else if (title.equals(getString(R.string.venue)))
+            spinner.setSelection(2);
         drawer.closeDrawer(GravityCompat.START);
-        /*SearchResultFragment fragment = new SearchResultFragment();
+        DetailedSearchFragment fragment = new DetailedSearchFragment();
+        Fragment existingFragment = getSupportFragmentManager().findFragmentByTag("Search");
+        Fragment mapFragment = getSupportFragmentManager().findFragmentByTag("Map");
+        Bundle bundle = new Bundle();
+        bundle.putString("Search", title);
+        fragment.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_main, fragment);
-        //transaction.show(fragment);
-        transaction.commit();*/
+        if (existingFragment != null)
+        transaction.remove(existingFragment);
+        if (mapFragment != null)
+        transaction.remove(mapFragment);
+        transaction.replace(R.id.search_bar_view, fragment, "Search");
+        transaction.commit();
+        floatingActionButton.setVisibility(View.GONE);
+
         return true;
     }
 

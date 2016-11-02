@@ -3,17 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:id="@+id/detail">
         <item
-            android:title="menu1"
+            android:title="@string/search_detail"
             android:enabled="false"
             android:checkable="false"
             android:id="@+id/detail_search">
         </item>
         <item
-            android:title="opt1"
+            android:title="@string/event"
             android:id="@+id/event">
         </item>
+        <item android:title="@string/artist"
+            android:id="@+id/artist" />
         <item
-            android:title="opt2"
+            android:title="@string/venue"
             android:id="@+id/venue">
         </item>
     </group>

@@ -27,6 +27,39 @@
     <string name="location">Or enter location</string>
     <string name="mi">mi</string>
     <string name="km">km</string>
+    <string name="include">Include</string>
+    <string name="exclude">Exclude</string>
+    <string name="undecided">Not sure</string>
+    <string name="include_exclude_categories">Include/exclude categories</string>
+    <string name="filter_by_date">Date category: </string>
+    <string name="select_date_range">Or select date range</string>
+    <string name="all">All</string>
+    <string name="today">Today</string>
+    <string name="this_week">This week</string>
+    <string name="next_week">Next week</string>
+    <string name="last_week">Last week</string>
+    <string name="past">Past</string>
+    <string name="future">Future</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">OK</string>
+    <string name="popularity">Popularity</string>
+    <string name="date">Date</string>
+    <string name="relevance">Relevance</string>
+    <string name="venue_name">Venue Name</string>
+    <string name="name">Name</string>
+    <string name="event_count">Events</string>
+    <string name="demand_member_count">Demands</string>
+    <string name="sort_by">Sort by</string>
+    <string name="ascending">ascending</string>
+    <string name="descending">descending</string>
+    <string name="results_per_page">results per page</string>
+    <string name="detailed_search">Advanced %1$s Search</string>
+    <string name="search_detail">Advanced search</string>
+    <string name="my_events_locations">My events &amp; locations</string>
+    <string name="my_events">Events I\'m going to</string>
+    <string name="my_locations">My saved locations</string>
+
+    <!-- extracted all categories from API because multi-language not supported by API-->
     <string name="categories">Categories</string>
     <string name="music">Concerts &amp; Tour Dates</string>
     <string name="conference">Conferences &amp; Tradeshows</string>
@@ -58,46 +91,5 @@
     <string name="technology">Technology</string>
     <string name="other">Other &amp; Miscellaneous</string>
     <!-- extracted all categories from API because multi-language not supported by API-->
-<array name="search_array">
-    <item>@string/artist</item>
-    <item>@string/event</item>
-    <item>@string/venue</item>
 
-</array>
-    <array name="units">
-        <item>@string/mi</item>
-        <item>@string/km</item>
-    </array>
-
-    <array name="categories_array">
-        <item>@string/music</item>
-        <item>@string/conference</item>
-        <item>@string/comedy</item>
-        <item>@string/learning_education</item>
-        <item>@string/family_fun_kids</item>
-        <item>@string/festivals_parades</item>
-        <item>@string/movies_film</item>
-        <item>@string/food</item>
-        <item>@string/fundraisers</item>
-        <item>@string/art</item>
-        <item>@string/support</item>
-        <item>@string/holiday</item>
-        <item>@string/books</item>
-        <item>@string/attractions</item>
-        <item>@string/community</item>
-        <item>@string/business</item>
-        <item>@string/singles_social</item>
-        <item>@string/schools_alumni</item>
-        <item>@string/clubs_associations</item>
-        <item>@string/outdoors_recreation</item>
-        <item>@string/performing_arts</item>
-        <item>@string/animals</item>
-        <item>@string/politics_activism</item>
-        <item>@string/sales</item>
-        <item>@string/science</item>
-        <item>@string/religion_spirituality</item>
-        <item>@string/sports</item>
-        <item>@string/technology</item>
-        <item>@string/other</item>
-    </array>
 </resources>

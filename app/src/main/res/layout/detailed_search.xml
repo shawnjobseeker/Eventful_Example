@@ -1,24 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<TextView
-    android:layout_width="wrap_content"
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/advanced_search" />
+    android:fillViewport="true"
+    android:layout_above="@+id/submit_button"
+    android:background="@color/cardview_light_background">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+<LinearLayout
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/cardview_light_background"
+    android:id="@+id/form">
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        app:srcCompat="@drawable/ic_close_light"
+        android:id="@+id/close_button" />
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/advanced_search"
+    android:text="@string/detailed_search"
+    android:textSize="24sp"
+    android:textAlignment="center"
+    android:textStyle="normal|bold"
+    android:textColor="@color/cast_expanded_controller_background_color" />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/keyword_edit"
-        android:hint="Keywords" />
+        android:hint="@string/keywords" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:id="@+id/location_panel">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/location_edit"
+            android:hint="@string/location"
+            android:layout_below="@+id/distance_edit" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="2"
+            android:id="@+id/distance_edit" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/units_spinner"
+            android:layout_above="@+id/location_edit"
+            android:layout_toRightOf="@+id/distance_edit"
+            android:layout_toEndOf="@+id/distance_edit" />
+
+        <TextView
+            android:text="@string/within_current"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/current_location"
+            android:layout_above="@+id/location_edit"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/date_panel">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/date_category_text"
+        android:text="@string/filter_by_date" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/date_category"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/date_category_text"
+        android:layout_toEndOf="@+id/date_category_text"></Spinner>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/or_select_range"
+        android:text="@string/select_date_range"
+        android:layout_below="@+id/date_category"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/or_select_range"
+    android:orientation="horizontal">
+    <EditText
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/date_from"
+        android:layout_weight="1"
+        android:cursorVisible="false" />
 
     <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/date_to"
+        android:layout_weight="1"
+        android:cursorVisible="false"></EditText></LinearLayout>
+
+ />
+</RelativeLayout>
+
+    <include layout="@layout/category_view"
+        android:visibility="gone" />
+
+    <Button
+        android:text="@string/include_exclude_categories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/location_edit"
-        android:hint="Location" />
+        android:id="@+id/categories_btn"
+        android:layout_marginBottom="4dp" />
+
+
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"><TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/sort_by"
+    android:text="@string/sort_by" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/results_per_page"
+        android:text="@string/results_per_page"
+        android:layout_toRightOf="@+id/results_qty"
+        android:layout_alignBottom="@+id/results_qty" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sort_by_category"
+        android:layout_toRightOf="@+id/sort_by"></Spinner>
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/asc_desc"
+        android:layout_toRightOf="@+id/sort_by_category"></Spinner>
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/results_qty"
+        android:layout_below="@+id/sort_by_category"></Spinner></RelativeLayout>
+
 </LinearLayout>
+    <Button
+        android:text="Search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/submit_button"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/cast_expanded_controller_text_color"
+        android:textSize="18sp"
+        android:textStyle="normal|bold"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/form" />
+    </RelativeLayout>
+</ScrollView>
+
