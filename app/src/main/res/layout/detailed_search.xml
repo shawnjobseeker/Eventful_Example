@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fillViewport="true"
     android:layout_above="@+id/submit_button"
     android:background="@color/cardview_light_background">
-    <RelativeLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/form"
+        android:background="@color/cardview_light_background"
+        android:fillViewport="true"
+        android:layout_above="@+id/submit_button"
+        android:layout_alignParentTop="true"
+        >
 <LinearLayout
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/cardview_light_background"
-    android:id="@+id/form">
+    android:background="@color/cardview_light_background">
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -171,6 +176,8 @@
         android:layout_below="@+id/sort_by_category"></Spinner></RelativeLayout>
 
 </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
     <Button
         android:text="Search"
         android:layout_width="match_parent"
@@ -180,8 +187,6 @@
         android:textColor="@color/cast_expanded_controller_text_color"
         android:textSize="18sp"
         android:textStyle="normal|bold"
-        android:layout_alignParentBottom="false"
-        android:layout_below="@+id/form" />
-    </RelativeLayout>
-</ScrollView>
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>
 

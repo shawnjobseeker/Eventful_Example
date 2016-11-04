@@ -1,7 +1,10 @@
 package uk.co.theappexperts.shawn.loginapp;
 
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -68,6 +71,8 @@ import uk.co.theappexperts.shawn.loginapp.contract.VenuePresenter;
 import uk.co.theappexperts.shawn.loginapp.model.IData;
 import uk.co.theappexperts.shawn.loginapp.model.event.Event;
 import uk.co.theappexperts.shawn.loginapp.model.venue.Venue;
+import static uk.co.theappexperts.shawn.loginapp.PresenterParams.Columns.IDATA_CLASS;
+import static uk.co.theappexperts.shawn.loginapp.PresenterParams.TABLE_NAME;
 
 /**
  * A login screen that offers login via email/password.
@@ -131,7 +136,8 @@ public class LoginActivity extends AppCompatActivity implements
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
      IContract.IPresenter presenter;
-
+    PresenterDBHelper helper;
+    private boolean locationButtonClicked;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -208,9 +214,10 @@ public class LoginActivity extends AppCompatActivity implements
                 LoginActivity.this.onResume();
             }
         });
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dialog = new ProgressDialog(this);
-
+        helper = new PresenterDBHelper(this);
     }
     public <E extends IData> void passDataAdapter(List<E> list, int pageCount, int pageNumber) {
 
@@ -233,7 +240,7 @@ public class LoginActivity extends AppCompatActivity implements
         //Facebook login
         accessTokenTracker.stopTracking();
         profileTracker.stopTracking();
-
+        helper.close();
     }
 
     @Override
@@ -270,9 +277,26 @@ public class LoginActivity extends AppCompatActivity implements
         if (editText.getText().length() > 0) {
             new SearchItemClick().onClick(null);
         }
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null);
+        if (cursor != null) {
 
-
-
+            if (cursor.getCount() == 1) {
+                cursor.moveToFirst();
+                String dataClass = cursor.getString(cursor.getColumnIndex(IDATA_CLASS));
+                if (dataClass != null) {
+                    if (dataClass.equals(getResources().getResourceEntryName(R.id.artist)))
+                        presenter = new ArtistPresenter(this);
+                    else if (dataClass.equals(getResources().getResourceEntryName(R.id.event)))
+                        presenter = new EventPresenter(this);
+                    else if (dataClass.equals(getResources().getResourceEntryName(R.id.venue)))
+                        presenter = new VenuePresenter(this);
+                    presenter.setValues(cursor);
+                    presenter.query();
+                }
+            }
+            cursor.close();
+        }
 
     }
 
@@ -366,10 +390,10 @@ public class LoginActivity extends AppCompatActivity implements
     public void onConnected(@Nullable Bundle bundle) {
         try {
             currentLocation = LocationServices.FusedLocationApi.getLastLocation(google);
-            savedInstanceState.putDouble("latitude", currentLocation.getLatitude());
-            savedInstanceState.putDouble("longitude", currentLocation.getLongitude());
-            if (locationButton.getVisibility() == View.VISIBLE)
-                new LocationClick().onClick(null);
+            if (currentLocation != null) {
+                savedInstanceState.putDouble("latitude", currentLocation.getLatitude());
+                savedInstanceState.putDouble("longitude", currentLocation.getLongitude());
+            }
         } catch(SecurityException e) {
             onConnectionFailed(new ConnectionResult(ConnectionResult.SERVICE_MISSING_PERMISSION, null, "Connection unauthorised."));
         }
@@ -447,6 +471,7 @@ public class LoginActivity extends AppCompatActivity implements
         google.disconnect();
         super.onStop();
     }
+
      private void connectToGoogleApiClient() {
         if (google == null) {
             google = new GoogleApiClient.Builder(this)
@@ -468,6 +493,8 @@ public class LoginActivity extends AppCompatActivity implements
         map = googleMap;
         Event event;
         Venue venue;
+        if (list == null)
+            return;
         double sumLat = 0, sumLong = 0;
         int count = list.size();
         MarkerOptions option = new MarkerOptions();
@@ -493,7 +520,7 @@ public class LoginActivity extends AppCompatActivity implements
         }
         double avgLat = sumLat / count;
         double avgLong = sumLong / count;
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 11));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 2));
     }
     private void addMarker(double lat, double lng, MarkerOptions option, Object iData) {
         String title = "";
@@ -508,6 +535,11 @@ public class LoginActivity extends AppCompatActivity implements
          dialog.setMessage(getString(R.string.loading));
          dialog.show();
      }
+    void saveQuery(ContentValues values) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        helper.onUpgrade(db, 1, 1);
+        db.insert(TABLE_NAME, null, values);
+    }
 
 }
 

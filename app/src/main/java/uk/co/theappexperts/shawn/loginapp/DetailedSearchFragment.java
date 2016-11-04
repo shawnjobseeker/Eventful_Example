@@ -1,14 +1,18 @@
 package uk.co.theappexperts.shawn.loginapp;
 
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.TypedArray;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +63,7 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
     @BindView(R.id.location_edit)
     EditText locationEdit;
     @BindView(R.id.category_list)
-    ListView categoryList;
+    RecyclerView categoryList;
     @BindView(R.id.category_panel)
     RelativeLayout categoryPanel;
     @BindView(R.id.categories_btn)
@@ -117,6 +121,16 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
         else if (searchFactor.equals(getString(R.string.event))) {
             setSpinnerAdapter(sortBy, R.array.event_sort_by);
             array = getResources().obtainTypedArray(R.array.event_sort_by);
+            catAdapter = new CategoryAdapter(getContext(), R.layout.category_row, R.array.categories_array);
+            categoryList.setLayoutManager(new LinearLayoutManager(getContext()));
+            categoryList.setItemViewCacheSize(array.length());
+            categoryList.setAdapter(catAdapter);
+            editFrom.setInputType(InputType.TYPE_NULL);
+            editTo.setInputType(InputType.TYPE_NULL);
+            editFrom.setOnFocusChangeListener(this);
+            editTo.setOnFocusChangeListener(this);
+            editFrom.setOnClickListener(this);
+            editTo.setOnClickListener(this);
         }
         else if (searchFactor.equals(getString(R.string.venue))) {
             setSpinnerAdapter(sortBy, R.array.venue_sort_by);
@@ -132,8 +146,7 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
         intAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         resultsQty.setAdapter(intAdapter);
         resultsQty.setSelection(2);
-        catAdapter = new CategoryAdapter(getContext(), R.layout.category_row, R.array.categories_array);
-        categoryList.setAdapter(catAdapter);
+
         categoryPanel.setVisibility(View.GONE);
         categoriesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,12 +155,7 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
                 categoryPanel.setVisibility(View.VISIBLE);
             }
         });
-        editFrom.setInputType(InputType.TYPE_NULL);
-        editTo.setInputType(InputType.TYPE_NULL);
-        editFrom.setOnFocusChangeListener(this);
-        editTo.setOnFocusChangeListener(this);
-        editFrom.setOnClickListener(this);
-        editTo.setOnClickListener(this);
+
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,54 +165,55 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ContentValues values = new ContentValues();
                 if (searchFactor.equals(getString(R.string.artist))) {
                     main.presenter = new ArtistPresenter(main);
+                    values.put(PresenterParams.Columns.IDATA_CLASS, getResources().getResourceEntryName(R.string.artist));
                 }
                 else if (searchFactor.equals(getString(R.string.event))) {
                     main.presenter = new EventPresenter(main);
-                    EventPresenter vp = (EventPresenter)main.presenter;
-                    if (locationEdit.getText().length() > 0 || distanceEdit.getText().length() == 0)
-                        vp.setLocation(locationEdit.getText().toString());
-                    else {
-                        vp.setLocation(main.currentLocation.getLatitude() + "," + main.currentLocation.getLongitude());
-                        vp.setWithin(Integer.parseInt(distanceEdit.getText().toString()));
-                        vp.setUnits(units.getSelectedItem().toString());
-                    }
+                    values.put(PresenterParams.Columns.IDATA_CLASS, getResources().getResourceEntryName(R.string.event));
+                    putLocationValues(values);
                     if (dateCategories.getSelectedItem().toString().equals(getString(R.string.all))) {
                         if (editFrom.getText().length() > 0 && editTo.getText().length() > 0) {
-                            vp.setDate(formatToUrl.format(dateFrom) + "-" + formatToUrl.format(dateTo));
+                            values.put(PresenterParams.Columns.DATE, formatToUrl.format(dateFrom) + "-" + formatToUrl.format(dateTo));
                         }
                     }
                     else
-                        vp.setDate(dateCategories.getSelectedItem().toString());
-                        vp.setIncludeCategories(catAdapter.retrieveCategories(Category.INCLUDED));
-                        vp.setExcludeCategories(catAdapter.retrieveCategories(Category.EXCLUDED));
-                    main.floatingActionButton.setVisibility(View.VISIBLE);
+                        values.put(PresenterParams.Columns.DATE, dateCategories.getSelectedItem().toString());
+                    values.put(PresenterParams.Columns.INCLUDE_CATEGORIES, catAdapter.retrieveCategories(Category.INCLUDED));
+                    values.put(PresenterParams.Columns.EXCLUDE_CATEGORIES, catAdapter.retrieveCategories(Category.EXCLUDED));
                 }
                     else if (searchFactor.equals(getString(R.string.venue))) {
                     main.presenter = new VenuePresenter(main);
-                    VenuePresenter vp = (VenuePresenter)main.presenter;
-                    if (locationEdit.getText().length() > 0 || distanceEdit.getText().length() == 0)
-                        vp.setLocation(locationEdit.getText().toString());
-                    else {
-                        vp.setLocation(main.currentLocation.getLatitude() + "," + main.currentLocation.getLongitude());
-                        vp.setWithin(Integer.parseInt(distanceEdit.getText().toString()));
-                        vp.setUnits(units.getSelectedItem().toString());
-                    }
-                    main.floatingActionButton.setVisibility(View.VISIBLE);
+                    values.put(PresenterParams.Columns.IDATA_CLASS, getResources().getResourceEntryName(R.string.venue));
+                    putLocationValues(values);
                 }
-                main.presenter.setQuery(keywordEdit.getText().toString());
+               values.put(PresenterParams.Columns.SEARCH_TERM, keywordEdit.getText().toString());
                 int sortId = array.getResourceId(sortBy.getSelectedItemPosition(), -1);
-                main.presenter.setSortOrder(getResources().getResourceEntryName(sortId));
-                main.presenter.setSortDirection(ascDesc.getSelectedItem().toString());
-                main.presenter.setPageSize(Integer.parseInt(resultsQty.getSelectedItem().toString()));
+                values.put(PresenterParams.Columns.SORT_ORDER, getResources().getResourceEntryName(sortId));
+                values.put(PresenterParams.Columns.SORT_DIRECTION, ascDesc.getSelectedItem().toString());
+                values.put(PresenterParams.Columns.PAGE_SIZE, Integer.parseInt(resultsQty.getSelectedItem().toString()));
+                main.presenter.setValues(values);
+                main.saveQuery(values);
                 main.presenter.query();
                 closeFragment();
                 main.showProgressDialog();
             }
         });
         return v;
+    }
+    private void putLocationValues(ContentValues values) {
+        if (locationEdit.getText().length() > 0 || distanceEdit.getText().length() == 0)
+            values.put(PresenterParams.Columns.LOCATION, locationEdit.getText().toString());
+        else {
+            if (main.currentLocation == null)
+                setPlaceholderLocation();
+            values.put(PresenterParams.Columns.LOCATION, main.currentLocation.getLatitude() + "," + main.currentLocation.getLongitude());
+            values.put(PresenterParams.Columns.WITHIN, Integer.parseInt(distanceEdit.getText().toString()));
+            values.put(PresenterParams.Columns.UNITS, units.getSelectedItem().toString());
+        }
+        main.floatingActionButton.setVisibility(View.VISIBLE);
     }
     private void setSpinnerAdapter(Spinner spinner, int arrayId) {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), arrayId, R.layout.spinner_item);
@@ -286,5 +295,10 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
         FragmentTransaction transaction = main.getSupportFragmentManager().beginTransaction();
         transaction.remove(DetailedSearchFragment.this);
         transaction.commit();
+    }
+    private void setPlaceholderLocation() {
+        main.currentLocation = new Location("");
+        main.currentLocation.setLatitude(51);
+        main.currentLocation.setLongitude(0);
     }
 }
