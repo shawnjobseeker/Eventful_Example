@@ -211,7 +211,7 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
             values.put(PresenterParams.Columns.LOCATION, locationEdit.getText().toString());
         else {
             if (main.currentLocation == null)
-                setPlaceholderLocation();
+                main.setPlaceholderLocation();
             values.put(PresenterParams.Columns.LOCATION, main.currentLocation.getLatitude() + "," + main.currentLocation.getLongitude());
             values.put(PresenterParams.Columns.WITHIN, Integer.parseInt(distanceEdit.getText().toString()));
             values.put(PresenterParams.Columns.UNITS, units.getSelectedItem().toString());
@@ -299,9 +299,5 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
         transaction.remove(this);
         transaction.commit();
     }
-    private void setPlaceholderLocation() {
-        main.currentLocation = new Location("");
-        main.currentLocation.setLatitude(51);
-        main.currentLocation.setLongitude(0);
-    }
+
 }

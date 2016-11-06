@@ -6,7 +6,7 @@
     android:gravity="bottom"
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
-
+<!-- TextView not visible on virtual device for some reason -->
     <TextView
         android:text="TextView"
         android:layout_width="wrap_content"

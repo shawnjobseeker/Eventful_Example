@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,8 +33,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -102,6 +105,8 @@ public class LoginActivity extends AppCompatActivity implements
     RecyclerView recyclerView;
     @BindView(R.id.page_toggle_view)
     LinearLayout pageToggleView;
+    @BindView(R.id.search_bar_view)
+    RelativeLayout searchBarView;
     private NavHeaderHolder holder;
     private Profile currentProfile;
     private GoogleApiClient google;
@@ -120,7 +125,7 @@ public class LoginActivity extends AppCompatActivity implements
             AccessToken token = loginResult.getAccessToken();
              LoginActivity.this.currentProfile = Profile.getCurrentProfile();
             updateLogin();
-            Toast.makeText(getApplicationContext(), "Login successful.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.login_successful), Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -130,7 +135,7 @@ public class LoginActivity extends AppCompatActivity implements
 
         @Override
         public void onError(FacebookException error) {
-
+            Toast.makeText(getApplicationContext(), "Login fail.", Toast.LENGTH_SHORT).show();
         }
     };
     private CallbackManager callbackManager;
@@ -175,10 +180,16 @@ public class LoginActivity extends AppCompatActivity implements
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
+
         toolbar.setLogo(R.drawable.eventful_logo);
         toggle.syncState();
+        toolbar.setNavigationIcon(R.drawable.menu);
         navigationView.setNavigationItemSelectedListener(this);
         // initialize search view
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        if (((float)searchBarView.getWidth() / displaymetrics.density) < 420.0f && ((float)displaymetrics.widthPixels / displaymetrics.density) >= 620.0f)
+            searchBarView = (RelativeLayout)getLayoutInflater().inflate(R.layout.search_bar_view, null, false);
         button.setImageDrawable(resize(ContextCompat.getDrawable(this, android.R.drawable.ic_menu_search), 25, 25));
         locationButton.setImageDrawable(resize(ContextCompat.getDrawable(this, android.R.drawable.ic_menu_mylocation), 25, 25));
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.search_array, R.layout.spinner_item);
@@ -315,7 +326,11 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
 
-
+    void setPlaceholderLocation() {
+        currentLocation = new Location("");
+        currentLocation.setLatitude(51);
+        currentLocation.setLongitude(0);
+    }
     @Override
     public void onStart() {
         connectToGoogleApiClient();
@@ -457,6 +472,8 @@ public class LoginActivity extends AppCompatActivity implements
 
         @Override
         public void onClick(View v) {
+            if (currentLocation == null)
+                setPlaceholderLocation();
             Object item = spinner.getSelectedItem();
             if (item.equals(getString(R.string.event)))
                 presenter = new EventPresenter(LoginActivity.this);

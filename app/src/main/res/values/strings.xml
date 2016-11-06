@@ -18,6 +18,7 @@
     <string name="unable_to_connect">Unable to connect: </string>
     <string name="connection_unauthorised">Connection unauthorised</string>
     <string name="login_successful">Login successful</string>
+    <string name="login_failure">Login failed</string>
     <string name="im_going">I\'m going</string>
     <string name="page">Page</string>
     <string name="page_of">of %1$d</string>
