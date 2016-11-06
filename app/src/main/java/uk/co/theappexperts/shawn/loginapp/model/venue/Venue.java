@@ -3,11 +3,14 @@ package uk.co.theappexperts.shawn.loginapp.model.venue;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 import uk.co.theappexperts.shawn.loginapp.model.Comments;
 import uk.co.theappexperts.shawn.loginapp.model.IData;
 import uk.co.theappexperts.shawn.loginapp.model.Links;
 import uk.co.theappexperts.shawn.loginapp.model.Tags;
 import uk.co.theappexperts.shawn.loginapp.model.event.Events;
+import uk.co.theappexperts.shawn.loginapp.model.image.Image;
 import uk.co.theappexperts.shawn.loginapp.model.image.Images;
 
 public class Venue implements IData {
@@ -712,7 +715,13 @@ public class Venue implements IData {
     }
 
     @Override
-    public String getImageUrl() {
-        return images.getImage().getUrl();
-    }
+        public String getImageUrl(boolean large) {
+        if (large && images != null) {
+            List<Image> imageList = ((Images) images).getImage();
+            if (imageList != null && !imageList.isEmpty())
+                return imageList.get(0).getLarge().getUrl();
+        }
+        return "";
+        }
+
 }

@@ -21,18 +21,18 @@
     </group>
     <group android:id="@+id/my">
         <item
-            android:title="menu2"
+            android:title="@string/my_events_locations"
             android:enabled="false"
             android:checkable="false"
             android:id="@+id/my_events">
         </item>
 
         <item
-            android:title="opt4"
+            android:title="@string/my_events"
             android:id="@+id/near">
         </item>
         <item
-            android:title="opt5"
+            android:title="@string/my_locations"
             android:id="@+id/going">
         </item>
     </group>

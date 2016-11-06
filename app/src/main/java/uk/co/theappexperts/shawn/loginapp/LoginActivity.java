@@ -113,6 +113,7 @@ public class LoginActivity extends AppCompatActivity implements
     private  SupportMapFragment fragment;
     private ProgressDialog dialog;
     private List<? extends IData> list;
+    private int searchPageNumber;
     private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
@@ -222,6 +223,7 @@ public class LoginActivity extends AppCompatActivity implements
     public <E extends IData> void passDataAdapter(List<E> list, int pageCount, int pageNumber) {
 
         this.list = list;
+        this.searchPageNumber = searchPageNumber;
         if (list != null) {
             recyclerView.setAdapter(new Adapter<E>(list, R.layout.row, this));
             pageToggleView.setVisibility(View.VISIBLE);
@@ -292,6 +294,7 @@ public class LoginActivity extends AppCompatActivity implements
                     else if (dataClass.equals(getResources().getResourceEntryName(R.id.venue)))
                         presenter = new VenuePresenter(this);
                     presenter.setValues(cursor);
+                    presenter.setPageNumber(searchPageNumber);
                     presenter.query();
                 }
             }
@@ -330,6 +333,7 @@ public class LoginActivity extends AppCompatActivity implements
         super.onSaveInstanceState(outState);
         outState.putBoolean("mapEnabled", mapEnabled);
         outState.putInt("spinner_selectedItemPosition", spinner.getSelectedItemPosition());
+        outState.putInt("page_number", searchPageNumber);
         if (currentLocation != null) {
             outState.putDouble("latitude", currentLocation.getLatitude());
             outState.putDouble("longitude", currentLocation.getLongitude());
@@ -342,6 +346,7 @@ public class LoginActivity extends AppCompatActivity implements
         if (savedInstanceState != null) {
             mapEnabled = savedInstanceState.getBoolean("mapEnabled");
             spinner.setSelection(savedInstanceState.getInt("spinner_selectedItemPosition"));
+            this.searchPageNumber = savedInstanceState.getInt("page_number");
             this.savedInstanceState = savedInstanceState;
         }
     }

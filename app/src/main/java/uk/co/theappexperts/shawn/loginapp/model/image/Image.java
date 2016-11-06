@@ -4,6 +4,8 @@ package uk.co.theappexperts.shawn.loginapp.model.image;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Image {
 
     @SerializedName("small")
@@ -30,6 +32,11 @@ public class Image {
     @SerializedName("id")
     @Expose
     private String id;
+    @SerializedName("large")
+    @Expose
+    private Large large;
+    // custom deserialised array
+    private List<Image> image;
 
     /**
      *
@@ -175,5 +182,19 @@ public class Image {
         this.id = id;
     }
 
+    public Large getLarge() {
+        return large;
+    }
 
+    public void setLarge(Large large) {
+        this.large = large;
+    }
+
+    public List<Image> getImage() {
+        return image;
+    }
+
+    public void setImage(List<Image> image) {
+        this.image = image;
+    }
 }

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -137,6 +138,8 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
             array = getResources().obtainTypedArray(R.array.venue_sort_by);
         }
         dialog = new DatePickerDialog(getContext(), 0, this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel), Message.obtain());
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.yes), Message.obtain());
         dialog.setOnDismissListener(this);
         setSpinnerAdapter(units, R.array.units);
         setSpinnerAdapter(dateCategories, R.array.date_categories);
@@ -293,7 +296,7 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
     }
     private void closeFragment() {
         FragmentTransaction transaction = main.getSupportFragmentManager().beginTransaction();
-        transaction.remove(DetailedSearchFragment.this);
+        transaction.remove(this);
         transaction.commit();
     }
     private void setPlaceholderLocation() {

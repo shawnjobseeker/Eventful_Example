@@ -37,7 +37,7 @@ public class PresenterParams {
             + Columns.SORT_ORDER + " TEXT,"
             + Columns.SORT_DIRECTION + " TEXT,"
             + Columns.PAGE_SIZE + " INTEGER);";
-    
+
     public static final String DROP_TABLE = "DROP TABLE " + TABLE_NAME + ";";
 
 }

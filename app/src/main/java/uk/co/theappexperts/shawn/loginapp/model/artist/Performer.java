@@ -4,7 +4,10 @@ package uk.co.theappexperts.shawn.loginapp.model.artist;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 import uk.co.theappexperts.shawn.loginapp.model.IData;
+import uk.co.theappexperts.shawn.loginapp.model.event.Events;
 import uk.co.theappexperts.shawn.loginapp.model.image.Image;
 import uk.co.theappexperts.shawn.loginapp.model.image.Images;
 
@@ -20,24 +23,15 @@ public class Performer implements IData {
     @SerializedName("event_count")
     @Expose
     private String eventCount;
-    @SerializedName("comments")
-    @Expose
-    private Object comments;
     @SerializedName("url")
     @Expose
     private String url;
     @SerializedName("id")
     @Expose
     private String id;
-    @SerializedName("trackbacks")
-    @Expose
-    private Object trackbacks;
-    @SerializedName("links")
-    @Expose
-    private Object links;
     @SerializedName("images")
     @Expose
-    private Object images;
+    private Images images;
     @SerializedName("image")
     @Expose
     private Image image;
@@ -50,42 +44,28 @@ public class Performer implements IData {
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("demand_member_count")
+    @SerializedName("description")
     @Expose
-    private String demandMemberCount;
-    @SerializedName("vanity_url")
-    @Expose
-    private Object vanityUrl;
-    @SerializedName("categories")
-    @Expose
-    private Object categories;
+    private String desc;
+
+
     @SerializedName("short_bio")
     @Expose
     private String shortBio;
-    @SerializedName("tags")
-    @Expose
-    private Object tags;
     @SerializedName("modified")
     @Expose
     private String modified;
-    @SerializedName("created")
-    @Expose
-    private String created;
-    @SerializedName("demands")
-    @Expose
-    private Demands demands;
+
+
     @SerializedName("events")
     @Expose
-    private Object events;
+    private Events events;
     @SerializedName("long_bio")
     @Expose
     private Object longBio;
     @SerializedName("demand_count")
     @Expose
     private String demandCount;
-    @SerializedName("user_id")
-    @Expose
-    private Object userId;
 
     /**
      * @return The withdrawn
@@ -132,16 +112,7 @@ public class Performer implements IData {
     /**
      * @return The comments
      */
-    public Object getComments() {
-        return comments;
-    }
 
-    /**
-     * @param comments The comments
-     */
-    public void setComments(Object comments) {
-        this.comments = comments;
-    }
 
     /**
      * @return The url
@@ -174,42 +145,19 @@ public class Performer implements IData {
     /**
      * @return The trackbacks
      */
-    public Object getTrackbacks() {
-        return trackbacks;
-    }
 
-    /**
-     * @param trackbacks The trackbacks
-     */
-    public void setTrackbacks(Object trackbacks) {
-        this.trackbacks = trackbacks;
-    }
-
-    /**
-     * @return The links
-     */
-    public Object getLinks() {
-        return links;
-    }
-
-    /**
-     * @param links The links
-     */
-    public void setLinks(Object links) {
-        this.links = links;
-    }
 
     /**
      * @return The images
      */
-    public Object getImages() {
+    public Images getImages() {
         return images;
     }
 
     /**
      * @param images The images
      */
-    public void setImages(Object images) {
+    public void setImages(Images images) {
         this.images = images;
     }
 
@@ -258,44 +206,12 @@ public class Performer implements IData {
     /**
      * @return The demandMemberCount
      */
-    public String getDemandMemberCount() {
-        return demandMemberCount;
-    }
 
-    /**
-     * @param demandMemberCount The demand_member_count
-     */
-    public void setDemandMemberCount(String demandMemberCount) {
-        this.demandMemberCount = demandMemberCount;
-    }
 
     /**
      * @return The vanityUrl
      */
-    public Object getVanityUrl() {
-        return vanityUrl;
-    }
 
-    /**
-     * @param vanityUrl The vanity_url
-     */
-    public void setVanityUrl(Object vanityUrl) {
-        this.vanityUrl = vanityUrl;
-    }
-
-    /**
-     * @return The categories
-     */
-    public Object getCategories() {
-        return categories;
-    }
-
-    /**
-     * @param categories The categories
-     */
-    public void setCategories(Object categories) {
-        this.categories = categories;
-    }
 
     /**
      * @return The shortBio
@@ -314,16 +230,7 @@ public class Performer implements IData {
     /**
      * @return The tags
      */
-    public Object getTags() {
-        return tags;
-    }
 
-    /**
-     * @param tags The tags
-     */
-    public void setTags(Object tags) {
-        this.tags = tags;
-    }
 
     /**
      * @return The modified
@@ -342,42 +249,23 @@ public class Performer implements IData {
     /**
      * @return The created
      */
-    public String getCreated() {
-        return created;
-    }
 
-    /**
-     * @param created The created
-     */
-    public void setCreated(String created) {
-        this.created = created;
-    }
 
     /**
      * @return The demands
      */
-    public Demands getDemands() {
-        return demands;
-    }
-
-    /**
-     * @param demands The demands
-     */
-    public void setDemands(Demands demands) {
-        this.demands = demands;
-    }
 
     /**
      * @return The events
      */
-    public Object getEvents() {
+    public Events getEvents() {
         return events;
     }
 
     /**
      * @param events The events
      */
-    public void setEvents(Object events) {
+    public void setEvents(Events events) {
         this.events = events;
     }
 
@@ -412,28 +300,29 @@ public class Performer implements IData {
     /**
      * @return The userId
      */
-    public Object getUserId() {
-        return userId;
-    }
 
-    /**
-     * @param userId The user_id
-     */
-    public void setUserId(Object userId) {
-        this.userId = userId;
-    }
     public String toString() {
         return  name;
     }
 
     @Override
     public String getDesc() {
-        return shortBio;
+        if (desc != null)
+        return desc;
+        else
+            return shortBio;
     }
 
     @Override
-    public String getImageUrl() {
+    public String getImageUrl(boolean large) {
+        if (large && images != null) {
+            List<Image> imageList = ((Images) images).getImage();
+            if (imageList != null && !imageList.isEmpty())
+                return imageList.get(0).getLarge().getUrl();
+        }
+        else if (image != null)
             return image.getMedium().getUrl();
+        return "";
     }
 
     public Image getImage() {
