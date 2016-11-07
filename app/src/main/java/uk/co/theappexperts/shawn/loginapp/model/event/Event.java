@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 import uk.co.theappexperts.shawn.loginapp.model.IData;
+import uk.co.theappexperts.shawn.loginapp.model.Links;
 import uk.co.theappexperts.shawn.loginapp.model.artist.Performer;
 import uk.co.theappexperts.shawn.loginapp.model.artist.Performers;
 import uk.co.theappexperts.shawn.loginapp.model.image.Image;
@@ -145,6 +146,11 @@ public class Event implements IData {
 
     @Override
     public String getUrl() {
+        return null;
+    }
+
+    @Override
+    public Links getLinks() {
         return null;
     }
 }

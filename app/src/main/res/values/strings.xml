@@ -61,6 +61,7 @@
     <string name="my_events">Events I\'m going to</string>
     <string name="my_locations">My saved locations</string>
     <string name="view_in_browser">View In Browser</string>
+    <string name="links">Links</string>
     <!-- extracted all categories from API because multi-language not supported by API-->
     <string name="categories">Categories</string>
     <string name="music">Concerts &amp; Tour Dates</string>

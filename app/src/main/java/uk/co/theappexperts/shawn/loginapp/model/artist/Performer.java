@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 import uk.co.theappexperts.shawn.loginapp.model.IData;
+import uk.co.theappexperts.shawn.loginapp.model.Links;
 import uk.co.theappexperts.shawn.loginapp.model.event.Events;
 import uk.co.theappexperts.shawn.loginapp.model.image.Image;
 import uk.co.theappexperts.shawn.loginapp.model.image.Images;
@@ -47,7 +48,9 @@ public class Performer implements IData {
     @SerializedName("description")
     @Expose
     private String desc;
-
+    @SerializedName("links")
+    @Expose
+    private Links links;
 
     @SerializedName("short_bio")
     @Expose
@@ -305,6 +308,10 @@ public class Performer implements IData {
         return  name;
     }
 
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
     @Override
     public String getDesc() {
         if (desc != null)
@@ -331,5 +338,13 @@ public class Performer implements IData {
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    public Links getLinks() {
+        return links;
+    }
+
+    public void setLinks(Links links) {
+        this.links = links;
     }
 }

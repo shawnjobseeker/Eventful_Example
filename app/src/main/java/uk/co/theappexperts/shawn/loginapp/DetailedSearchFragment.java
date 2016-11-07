@@ -31,6 +31,9 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -228,6 +231,14 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Tracker tracker = ((LoginActivity)getActivity()).tracker;
+        tracker.setScreenName("Search");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

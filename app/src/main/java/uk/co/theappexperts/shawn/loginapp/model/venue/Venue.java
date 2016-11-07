@@ -96,6 +96,9 @@ public class Venue implements IData {
     @SerializedName("country_name")
     @Expose
     private String country;
+    @SerializedName("country")
+    @Expose
+    private String country_;
     @SerializedName("owner")
     @Expose
     private String owner;
@@ -114,6 +117,8 @@ public class Venue implements IData {
     @SerializedName("events")
     @Expose
     private Events events;
+
+
 
     /**
      *
@@ -589,7 +594,8 @@ public class Venue implements IData {
      * The country
      */
     public String getCountry() {
-        return country;
+
+        return (country != null) ? country : country_;
     }
 
     /**
