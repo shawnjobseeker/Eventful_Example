@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "177192937775",
+    "project_id": "loginapp-71ee8"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:177192937775:android:58518c1bccc12fc5",
+        "android_client_info": {
+          "package_name": "uk.co.theappexperts.shawn.loginapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB8YqJQzMZzMxJIwSIL5_gFmS3u5JZwUg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-86416333-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MockEventful</string>
+
+    <!-- Strings related to login -->
+
+    <string name="facebook_app_id" >202371476866841</string>
+    <string name="logged_in_as">登录为: %1$s</string>
+    <string name="not_logged_in">未登录</string>
+    <string name="navigation_drawer_open">导航抽屉开</string>
+    <string name="navigation_drawer_close">导航抽屉关</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve">AIzaSyBM4qkXDQmDGekF_O9VKwa7_IzywAdPyTE</string>
+    <string name="quick_search">快速搜索</string>
+    <string name="search_event">用音乐家搜索事件</string>
+    <string name="unable_to_connect">无法连接: </string>
+    <string name="connection_unauthorised">连接被拒绝</string>
+    <string name="login_successful">登录成功</string>
+    <string name="login_failure">登录失败</string>
+    <string name="artist">音乐家</string>
+    <string name="event">事件</string>
+    <string name="venue">会场</string>
+    <string name="im_going">我要去</string>
+    <string name="page">页</string>
+    <string name="page_of">共%1$d</string>
+    <string name="loading">正在加载...</string>
+    <string name="keywords">搜索词</string>
+    <string name="within_current">从当前位置</string>
+    <string name="location">或输入位置</string>
+    <string name="mi">英里</string>
+    <string name="km">公里</string>
+    <string name="include">包括</string>
+    <string name="exclude">排除</string>
+    <string name="undecided">不确</string>
+    <string name="include_exclude_categories">包括/排除类别</string>
+    <string name="filter_by_date">日期类别: </string>
+    <string name="select_date_range">或选间隔</string>
+    <string name="all">全</string>
+    <string name="today">今日</string>
+    <string name="this_week">今周</string>
+    <string name="next_week">下周</string>
+    <string name="last_week">上周</string>
+    <string name="past">过去</string>
+    <string name="future">未来</string>
+    <string name="cancel">取消</string>
+    <string name="yes">是</string>
+    <string name="popularity">人气</string>
+    <string name="date">日期</string>
+    <string name="relevance">关联</string>
+    <string name="venue_name">会场名</string>
+    <string name="name">名</string>
+    <string name="event_count">事件数</string>
+    <string name="demand_member_count">需求数</string>
+    <string name="sort_by">排序</string>
+    <string name="ascending">上升</string>
+    <string name="descending">下降</string>
+    <string name="results_per_page">每页结果</string>
+    <string name="detailed_search">详细搜索: %1$s </string>
+    <string name="search_detail">详细搜索</string>
+    <string name="my_events_locations">我的事件和位置</string>
+    <string name="my_events">我要去的事件</string>
+    <string name="my_locations">我保存的位置</string>
+    <string name="view_in_browser">在浏览器中查看</string>
+    <string name="search">搜索</string>
+    <string name="links">链接</string>
+    <string name="categories">类别</string>
+    <string name="music">音乐会</string>
+    <string name="conference">会议贸易</string>
+    <string name="comedy">喜剧</string>
+    <string name="learning_education">教育</string>
+    <string name="family_fun_kids">儿童家庭</string>
+    <string name="festivals_parades">庆祝</string>
+    <string name="movies_film">电影</string>
+    <string name="food">食品和酒</string>
+    <string name="fundraisers">筹款慈善</string>
+    <string name="art">艺术画廊,展览</string>
+    <string name="support">健康福利</string>
+    <string name="holiday">旅游</string>
+    <string name="books">图书,文学</string>
+    <string name="attractions">博物,旅游景点</string>
+    <string name="community">邻里</string>
+    <string name="business">商业网络</string>
+    <string name="singles_social">单身社会</string>
+    <string name="schools_alumni">大学校友</string>
+    <string name="clubs_associations">俱乐部,协会</string>
+    <string name="outdoors_recreation">户外娱乐</string>
+    <string name="performing_arts">表演艺术</string>
+    <string name="animals">宠物</string>
+    <string name="politics_activism">政治,活动家组</string>
+    <string name="sales">销售零售</string>
+    <string name="science">科学</string>
+    <string name="religion_spirituality">宗教灵性</string>
+    <string name="sports">体育</string>
+    <string name="technology">技术</string>
+    <string name="other">其他事件</string>
+
+</resources>

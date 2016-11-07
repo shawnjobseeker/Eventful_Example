@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/category_panel">
+
+    <TextView
+        android:text="@string/categories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/categories_text"
+        android:padding="3dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/group_rb_headings"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/include"
+            android:text="@string/include"
+            android:padding="3dp"
+            android:textSize="10sp"
+            android:layout_weight="1"
+            android:textAlignment="center" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/exclude"
+            android:text="@string/exclude"
+            android:padding="3dp"
+            android:textSize="10sp"
+            android:layout_weight="1"
+            android:textAlignment="center" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/neither"
+            android:text="@string/undecided"
+            android:padding="3dp"
+            android:textSize="10sp"
+            android:layout_weight="1"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_below="@+id/categories_text"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/category_list"
+        android:layout_height="wrap_content" />
+    <!-- removed scrolling of this view due to strange side-effects
+    first: using nested scrolling with ListView caused some RadioButtons to 'lose' checked status when scrolled out of view
+    second: using nested scrolling with RecyclerView  caused inadvertent checking of RadioButtons in some rows above or below
+    so the view is scrollable only from parent ScrollView (detailed_search.xml)
+     -->
+</RelativeLayout>

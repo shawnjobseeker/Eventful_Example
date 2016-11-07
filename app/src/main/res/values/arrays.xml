@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="date_categories">
+        <item>@string/all</item>
+        <item>@string/today</item>
+        <item>@string/this_week</item>
+        <item>@string/last_week</item>
+        <item>@string/next_week</item>
+        <item>@string/past</item>
+        <item>@string/future</item>
+    </array>
+    <array name="search_array">
+        <item>@string/artist</item>
+        <item>@string/event</item>
+        <item>@string/venue</item>
+    </array>
+    <array name="units">
+        <item>@string/mi</item>
+        <item>@string/km</item>
+    </array>
+    <array name="asc_desc">
+        <item>@string/ascending</item>
+        <item>@string/descending</item>
+    </array>
+    <array name="event_sort_by">
+        <item>@string/date</item>
+        <item>@string/relevance</item>
+        <item>@string/popularity</item>
+    </array>
+    <array name="venue_sort_by">
+        <item>@string/venue_name</item>
+        <item>@string/relevance</item>
+        <item>@string/popularity</item>
+    </array>
+    <array name="artist_sort_by">
+        <item>@string/name</item>
+        <item>@string/relevance</item>
+        <item>@string/event_count</item>
+        <item>@string/demand_member_count</item>
+    </array>
+
+    <array name="categories_array">
+        <item>@string/music</item>
+        <item>@string/conference</item>
+        <item>@string/comedy</item>
+        <item>@string/learning_education</item>
+        <item>@string/family_fun_kids</item>
+        <item>@string/festivals_parades</item>
+        <item>@string/movies_film</item>
+        <item>@string/food</item>
+        <item>@string/fundraisers</item>
+        <item>@string/art</item>
+        <item>@string/support</item>
+        <item>@string/holiday</item>
+        <item>@string/books</item>
+        <item>@string/attractions</item>
+        <item>@string/community</item>
+        <item>@string/business</item>
+        <item>@string/singles_social</item>
+        <item>@string/schools_alumni</item>
+        <item>@string/clubs_associations</item>
+        <item>@string/outdoors_recreation</item>
+        <item>@string/performing_arts</item>
+        <item>@string/animals</item>
+        <item>@string/politics_activism</item>
+        <item>@string/sales</item>
+        <item>@string/science</item>
+        <item>@string/religion_spirituality</item>
+        <item>@string/sports</item>
+        <item>@string/technology</item>
+        <item>@string/other</item>
+    </array>
+</resources>

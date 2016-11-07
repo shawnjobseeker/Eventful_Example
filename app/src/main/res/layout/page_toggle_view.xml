@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/first_button" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/previous_button"
+        android:scaleX="-1" />
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
+        android:id="@+id/page_text"
+        android:text="@string/page"></TextView>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="2"
+        android:id="@+id/page_edit"
+        android:layout_weight="1"
+        android:textSize="14sp"
+        />
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content"
+        android:id="@+id/page_of"
+        android:text="@string/page_of"></TextView>
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/next_button" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/last_button"
+        android:scaleType="fitXY" />
+</merge>
