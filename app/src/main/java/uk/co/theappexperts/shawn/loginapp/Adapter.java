@@ -30,13 +30,13 @@ import uk.co.theappexperts.shawn.loginapp.model.venue.Venue;
  * Created by TheAppExperts on 30/10/2016.
  */
 
-public class Adapter<E extends IData> extends RecyclerView.Adapter<Adapter.ViewHolder> {
+ class Adapter<E extends IData> extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     private List<E> list;
     private int layoutId;
-    private static Context context;
+    private  Context context;
 
-    public static class ViewHolder<E> extends RecyclerView.ViewHolder {
+      class ViewHolder<E> extends RecyclerView.ViewHolder {
         E item;
         @BindView(R.id.title_text)
         TextView titleText;
@@ -76,7 +76,7 @@ public class Adapter<E extends IData> extends RecyclerView.Adapter<Adapter.ViewH
         }
     }
 
-    public Adapter(List<E> list, int layoutId, Context context) {
+     Adapter(List<E> list, int layoutId, Context context) {
         this.list = list;
         this.layoutId = layoutId;
         this.context = context;
@@ -88,7 +88,7 @@ public class Adapter<E extends IData> extends RecyclerView.Adapter<Adapter.ViewH
         holder.item = item;
         String title = (item.getName().length() < 50) ? item.getName() : item.getName().substring(0, 49) + "...";
         holder.titleText.setText(title);
-        String desc = null;
+        String desc;
         if (item.getDesc() != null)
                 desc = (item.getDesc().length() < 80) ? item.getDesc() : item.getDesc().substring(0, 79) + "...";
         else

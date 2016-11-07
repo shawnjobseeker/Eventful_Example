@@ -96,7 +96,7 @@ public class ApiClient {
      * headers quickly and efficiently.
      * @return
      */
-    public static OkHttpClient buildClient(){
+    private static OkHttpClient buildClient(){
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
 

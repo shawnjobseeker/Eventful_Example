@@ -8,9 +8,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/radio_group"
         android:orientation="horizontal"
-        android:layout_below="@+id/group_rb_headings"
-        android:layout_alignLeft="@+id/group_rb_headings"
-        android:layout_alignStart="@+id/group_rb_headings"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
 

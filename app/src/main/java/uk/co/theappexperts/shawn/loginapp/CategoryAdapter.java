@@ -27,13 +27,13 @@ import uk.co.theappexperts.shawn.loginapp.model.event.Category;
  * Created by TheAppExperts on 01/11/2016.
  */
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
+ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
     private int layoutId;
     private TypedArray array;
     private Integer[] include;
     private Context context;
-    public CategoryAdapter(Context context, int layoutId, int arrayRes) {
+     CategoryAdapter(Context context, int layoutId, int arrayRes) {
 
         this.array = context.getResources().obtainTypedArray(arrayRes);
         this.include = new Integer[array.length()];
@@ -41,12 +41,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         Arrays.fill(include, 0);
         this.context = context;
     }
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.category)
         TextView category;
         @BindView(R.id.radio_group)
         RadioGroup group;
-        public ViewHolder(View view) {
+         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             group.setTag(category.getText().toString());
@@ -79,7 +79,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         return (array == null) ? 0 : array.length();
     }
 
-    public String retrieveCategories(int included) {
+     String retrieveCategories(int included) {
         String returnString = "";
         for (int i = 0; i < array.length(); i++) {
             if (include[i] == included)

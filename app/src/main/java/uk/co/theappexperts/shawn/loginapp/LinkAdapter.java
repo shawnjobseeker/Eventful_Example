@@ -21,12 +21,12 @@ import uk.co.theappexperts.shawn.loginapp.model.Link;
  * Created by TheAppExperts on 07/11/2016.
  */
 
-public class LinkAdapter extends RecyclerView.Adapter<LinkAdapter.LinkViewHolder> {
+ class LinkAdapter extends RecyclerView.Adapter<LinkAdapter.LinkViewHolder> {
     private List<Link> links;
-    private static Context context;
-    public static class LinkViewHolder extends RecyclerView.ViewHolder {
-        public TextView textView;
-        public LinkViewHolder(View itemView) {
+    private  Context context;
+      class LinkViewHolder extends RecyclerView.ViewHolder {
+         TextView textView;
+         LinkViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView;
             textView.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +38,7 @@ public class LinkAdapter extends RecyclerView.Adapter<LinkAdapter.LinkViewHolder
             });
         }
     }
-    public LinkAdapter(List<Link> links, Context context) {
+     LinkAdapter(List<Link> links, Context context) {
         this.links = links;
         this.context = context;
     }

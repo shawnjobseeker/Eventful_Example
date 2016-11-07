@@ -17,7 +17,6 @@
             android:layout_height="100dp" />
 
         <TextView
-            android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/image_thumb"
@@ -27,7 +26,6 @@
             android:textStyle="normal|bold" />
 
         <TextView
-            android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title_text"
@@ -36,7 +34,6 @@
             android:id="@+id/date_text" />
 
         <TextView
-            android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/description"

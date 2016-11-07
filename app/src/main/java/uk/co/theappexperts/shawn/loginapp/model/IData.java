@@ -6,10 +6,10 @@ package uk.co.theappexperts.shawn.loginapp.model;
 
 public interface IData {
 
-    public String getId();
-    public String getName();
-    public String getDesc();
-    public String getUrl();
-    public String getImageUrl(boolean large);
-    public Links getLinks();
+     String getId();
+     String getName();
+     String getDesc();
+     String getUrl();
+     String getImageUrl(boolean large);
+     Links getLinks();
 }

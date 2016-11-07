@@ -57,7 +57,7 @@ public class EventPresenter extends IContract.IPresenter implements Observer<Sea
     }
     public void query() {
         api.queryEvent(API_KEY, query, location, date, includeCategories, excludeCategories, within, units, sortOrder, sortDirection, pageSize, pageNumber).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this);;
+                .subscribe(this);
     }
     public EventPresenter(Context context) {
         this.context = context;
