@@ -53,6 +53,9 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
+import com.google.android.gms.analytics.ExceptionReporter;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -143,10 +146,12 @@ public class LoginActivity extends AppCompatActivity implements
     private ProfileTracker profileTracker;
      IContract.IPresenter presenter;
     PresenterDBHelper helper;
-    private boolean locationButtonClicked;
+    Tracker tracker;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Analytics application = (Analytics) getApplication();
+        tracker = application.getDefaultTracker();
         if (savedInstanceState == null)
             this.savedInstanceState = new Bundle();
         else
@@ -183,7 +188,7 @@ public class LoginActivity extends AppCompatActivity implements
 
         toolbar.setLogo(R.drawable.eventful_logo);
         toggle.syncState();
-        toolbar.setNavigationIcon(R.drawable.menu);
+        toolbar.setNavigationIcon((resize(ContextCompat.getDrawable(this, R.drawable.menu), 48, 48)));
         navigationView.setNavigationItemSelectedListener(this);
         // initialize search view
         DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -230,11 +235,16 @@ public class LoginActivity extends AppCompatActivity implements
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         dialog = new ProgressDialog(this);
         helper = new PresenterDBHelper(this);
+        Thread.UncaughtExceptionHandler myHandler = new ExceptionReporter(
+                tracker,
+                Thread.getDefaultUncaughtExceptionHandler(),
+                this);
+        Thread.setDefaultUncaughtExceptionHandler(myHandler);
     }
     public <E extends IData> void passDataAdapter(List<E> list, int pageCount, int pageNumber) {
 
         this.list = list;
-        this.searchPageNumber = searchPageNumber;
+        this.searchPageNumber = pageNumber;
         if (list != null) {
             recyclerView.setAdapter(new Adapter<E>(list, R.layout.row, this));
             pageToggleView.setVisibility(View.VISIBLE);
@@ -290,6 +300,7 @@ public class LoginActivity extends AppCompatActivity implements
         if (editText.getText().length() > 0) {
             new SearchItemClick().onClick(null);
         }
+        // get most recent advanced search state from DB
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null);
         if (cursor != null) {
@@ -311,6 +322,8 @@ public class LoginActivity extends AppCompatActivity implements
             }
             cursor.close();
         }
+        tracker.setScreenName("main");
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
 
     }
 
@@ -379,7 +392,6 @@ public class LoginActivity extends AppCompatActivity implements
     }
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
         String title = item.getTitle().toString();
         if (title.equals(getString(R.string.artist)))
             spinner.setSelection(0);
@@ -465,6 +477,9 @@ public class LoginActivity extends AppCompatActivity implements
                 presenter = new VenuePresenter(LoginActivity.this);
             presenter.setQuery(editText.getText().toString());
             presenter.query();
+            // clear DB for quick search
+            SQLiteDatabase db = helper.getReadableDatabase();
+            helper.onUpgrade(db, 1, 1);
             LoginActivity.this.showProgressDialog();
         }
     }
@@ -522,17 +537,26 @@ public class LoginActivity extends AppCompatActivity implements
         MarkerOptions option = new MarkerOptions();
         for (int i = 0; i < list.size(); i++) {
             double lat = 0, lng = 0;
+
             if (list.get(i) instanceof Event) {
                 event = (Event)list.get(i);
-                 lat = Double.parseDouble(event.getLatitude());
-                 lng = Double.parseDouble(event.getLongitude());
-                addMarker(lat, lng, option, event);
+                if (event.getLongitude() == null || event.getLatitude() == null)
+                    count -= 1;
+                else {
+                    lat = Double.parseDouble(event.getLatitude());
+                    lng = Double.parseDouble(event.getLongitude());
+                    addMarker(lat, lng, option, event);
+                }
             }
             else if (list.get(i) instanceof Venue) {
                 venue = (Venue)list.get(i);
-                 lat = Double.parseDouble(venue.getLatitude());
-                 lng = Double.parseDouble(venue.getLongitude());
-                addMarker(lat, lng, option, venue);
+                if (venue.getLongitude() == null || venue.getLatitude() == null)
+                    count -= 1;
+                else {
+                    lat = Double.parseDouble(venue.getLatitude());
+                    lng = Double.parseDouble(venue.getLongitude());
+                    addMarker(lat, lng, option, venue);
+                }
             }
             else
                 count -= 1;
@@ -559,6 +583,7 @@ public class LoginActivity extends AppCompatActivity implements
      }
     void saveQuery(ContentValues values) {
         SQLiteDatabase db = helper.getWritableDatabase();
+        // clear DB, persist max 1 row in table at any time
         helper.onUpgrade(db, 1, 1);
         db.insert(TABLE_NAME, null, values);
     }
