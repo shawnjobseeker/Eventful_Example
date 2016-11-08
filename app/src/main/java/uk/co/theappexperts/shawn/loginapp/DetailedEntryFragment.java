@@ -21,12 +21,14 @@ import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.laimiux.rxnetwork.RxNetwork;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -81,6 +83,7 @@ public class DetailedEntryFragment extends Fragment implements OnMapReadyCallbac
     private String url;
     private double latitude;
     private double longitude;
+    private LoginActivity main;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -99,7 +102,13 @@ public class DetailedEntryFragment extends Fragment implements OnMapReadyCallbac
         else if (iDataClass.equals(Venue.class.getName()))
             presenter = new VenueDetail(this);
         presenter.setId(this.id);
-        presenter.get();
+        main = (LoginActivity)getActivity();
+        if (RxNetwork.getConnectivityStatus(main)) {
+            presenter.get();
+            main.showProgressDialog();
+        }
+        else
+            main.onConnectionFailed(new ConnectionResult(ConnectionResult.NETWORK_ERROR, null, getString(R.string.no_connection_available)));
         View v = inflater.inflate(R.layout.detail_view, null, false);
         unbinder = ButterKnife.bind(this, v);
         final Bundle mapViewSavedInstanceState = savedInstanceState != null ? savedInstanceState.getBundle("mapViewSaveState") : null;
@@ -141,6 +150,9 @@ public class DetailedEntryFragment extends Fragment implements OnMapReadyCallbac
             displayVenue((Venue)data);
         if (data.getImageUrl(true).length() > 0)
         Picasso.with(getContext()).load(data.getImageUrl(true)).into(image);
+
+        if (main.dialog.isShowing())
+            main.dialog.dismiss();
     }
     private void setUpLinks(Links links) {
         linkView.setLayoutManager(new LinearLayoutManager(getContext()));

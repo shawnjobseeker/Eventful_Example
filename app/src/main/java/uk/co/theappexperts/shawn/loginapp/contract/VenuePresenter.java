@@ -33,10 +33,10 @@ public class VenuePresenter extends IContract.IPresenter implements  Observer<Se
     public void onNext(Search venue) {
         if (venue.getVenues() == null)
             ((LoginActivity)context).passDataAdapter(null, 0, 0);
-
-        List<Venue> performers = venue.getVenues().getVenue();
-        Log.d("GET", performers.toString());
-        ((LoginActivity)context).passDataAdapter(performers, Integer.parseInt(venue.getPageCount()), Integer.parseInt(venue.getPageNumber()));
+        else {
+            List<Venue> performers = venue.getVenues().getVenue();
+            ((LoginActivity) context).passDataAdapter(performers, Integer.parseInt(venue.getPageCount()), Integer.parseInt(venue.getPageNumber()));
+        }
     }
 
     @Override

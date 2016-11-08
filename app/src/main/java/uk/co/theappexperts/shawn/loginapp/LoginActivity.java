@@ -65,6 +65,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.laimiux.rxnetwork.RxNetwork;
 
 import java.util.List;
 
@@ -119,7 +120,7 @@ public class LoginActivity extends AppCompatActivity implements
     private GoogleMap map;
     private Bundle savedInstanceState;
     private  SupportMapFragment fragment;
-    private ProgressDialog dialog;
+    ProgressDialog dialog;
     private List<? extends IData> list;
     private int searchPageNumber;
     private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
@@ -138,7 +139,7 @@ public class LoginActivity extends AppCompatActivity implements
 
         @Override
         public void onError(FacebookException error) {
-            Toast.makeText(getApplicationContext(), "Login fail.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.login_failure), Toast.LENGTH_SHORT).show();
         }
     };
     private CallbackManager callbackManager;
@@ -427,11 +428,18 @@ public class LoginActivity extends AppCompatActivity implements
                 savedInstanceState.putDouble("longitude", currentLocation.getLongitude());
             }
         } catch(SecurityException e) {
-            onConnectionFailed(new ConnectionResult(ConnectionResult.SERVICE_MISSING_PERMISSION, null, "Connection unauthorised."));
+            onConnectionFailed(new ConnectionResult(ConnectionResult.SERVICE_MISSING_PERMISSION, null, getString(R.string.connection_unauthorised)));
         }
 
     }
-
+     void queryIfConnectionAvailable() {
+        if (RxNetwork.getConnectivityStatus(LoginActivity.this)) {
+            presenter.query();
+            showProgressDialog();
+        }
+        else
+            onConnectionFailed(new ConnectionResult(ConnectionResult.NETWORK_ERROR, null, getString(R.string.no_connection_available)));
+    }
     @Override
     public void onConnectionSuspended(int i) {
 
@@ -476,11 +484,11 @@ public class LoginActivity extends AppCompatActivity implements
             else if (item.equals(getString(R.string.venue)))
                 presenter = new VenuePresenter(LoginActivity.this);
             presenter.setQuery(editText.getText().toString());
-            presenter.query();
+            queryIfConnectionAvailable();
             // clear DB for quick search
             SQLiteDatabase db = helper.getReadableDatabase();
             helper.onUpgrade(db, 1, 1);
-            LoginActivity.this.showProgressDialog();
+
         }
     }
     private class LocationClick implements View.OnClickListener {
@@ -498,8 +506,7 @@ public class LoginActivity extends AppCompatActivity implements
                 ((EventPresenter)presenter).setLocation(currentLocation.getLatitude() + "," + currentLocation.getLongitude());
             else if ( presenter instanceof VenuePresenter)
                 ((VenuePresenter)presenter).setLocation(currentLocation.getLatitude() + "," + currentLocation.getLongitude());
-            presenter.query();
-
+            queryIfConnectionAvailable();
         }
     }
 

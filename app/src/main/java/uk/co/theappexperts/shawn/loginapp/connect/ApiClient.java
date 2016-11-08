@@ -27,8 +27,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import uk.co.theappexperts.shawn.loginapp.model.artist.Performer;
 import uk.co.theappexperts.shawn.loginapp.model.event.Event;
 import uk.co.theappexperts.shawn.loginapp.model.image.Image;
+import uk.co.theappexperts.shawn.loginapp.model.venue.Venue;
 
 import static uk.co.theappexperts.shawn.loginapp.connect.Constants.BASE_URL;
 
@@ -48,7 +50,7 @@ public class ApiClient {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
         okHttpClient = buildClient();
-        // custom deserializer for Image
+        // custom deserializer for Image (only need to retrieve max one Image)
         Type imageType = new TypeToken<List<Image>>(){}.getType();
         GsonBuilder customBuilder = new GsonBuilder().registerTypeAdapter(imageType, new JsonDeserializer<List<Image>>() {
             @Override
@@ -63,21 +65,13 @@ public class ApiClient {
                 return list;
             }
         });
-        // custom deserializer for Event
         Type eventType = new TypeToken<List<Event>>(){}.getType();
-        customBuilder.registerTypeAdapter(eventType, new JsonDeserializer<List<Event>>() {
-            @Override
-            public List<Event> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                ArrayList<Event> list = new ArrayList<Event>();
-                if (json instanceof JsonArray) {
-                    for (JsonElement e : (JsonArray)json)
-                        list.add((Event)context.deserialize(e, Event.class));
-                }
-                else
-                    list.add((Event)context.deserialize(json, Event.class));
-                return list;
-            }
-        });
+        customBuilder.registerTypeAdapter(eventType, new DeserializerOfArrayObject<Event>(Event.class));
+        Type performerType = new TypeToken<List<Performer>>(){}.getType();
+        customBuilder.registerTypeAdapter(performerType, new DeserializerOfArrayObject<Performer>(Performer.class));
+        Type venueType = new TypeToken<List<Venue>>(){}.getType();
+        customBuilder.registerTypeAdapter(venueType, new DeserializerOfArrayObject<Venue>(Venue.class));
+
         if (retrofit==null) {
             apiObservables = new LruCache<>(1);
             retrofit = new Retrofit.Builder()
@@ -164,6 +158,24 @@ public class ApiClient {
 
 
         return preparedObservable;
+    }
+    // custom deserializer for objects that may return Array or Object
+    static class DeserializerOfArrayObject<E> implements JsonDeserializer<List<E>> {
+        private Class<E> eClass;
+        @Override
+        public List<E> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            ArrayList<E> list = new ArrayList<E>();
+            if (json instanceof JsonArray) {
+                for (JsonElement e : (JsonArray)json)
+                    list.add((E)context.deserialize(e, eClass));
+            }
+            else
+                list.add((E)context.deserialize(json, eClass));
+            return list;
+        }
+        public DeserializerOfArrayObject(Class<E> typeClass) {
+            this.eClass = typeClass;
+        }
     }
 
 }

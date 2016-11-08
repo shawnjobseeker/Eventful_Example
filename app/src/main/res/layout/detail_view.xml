@@ -73,7 +73,8 @@
     android:layout_height="wrap_content"
     android:id="@+id/link_text"
     android:textSize="18sp"
-    android:textStyle="normal|bold" />
+    android:textStyle="normal|bold"
+    android:text="@string/links" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

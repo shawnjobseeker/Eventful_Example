@@ -14,6 +14,7 @@
     <string name="search_event">用音乐家搜索事件</string>
     <string name="unable_to_connect">无法连接: </string>
     <string name="connection_unauthorised">连接被拒绝</string>
+    <string name="no_connection_available">没有可用的连接</string>
     <string name="login_successful">登录成功</string>
     <string name="login_failure">登录失败</string>
     <string name="artist">音乐家</string>

@@ -53,6 +53,7 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.0-RC1'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.6'
+    compile 'com.laimiux.rxnetwork:rxnetwork:0.0.4'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.android.gms:play-services-maps:9.6.1'
     compile 'com.android.support:multidex:1.0.1'

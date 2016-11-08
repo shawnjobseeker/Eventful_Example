@@ -42,7 +42,6 @@ public class EventPresenter extends IContract.IPresenter implements Observer<Sea
     @Override
     public void onNext(Search events) {
         List<Event> performers = events.getEvents().getEvent();
-        Log.d("GET", performers.toString());
         ((LoginActivity)context).passDataAdapter(performers, Integer.parseInt(events.getPageCount()), Integer.parseInt(events.getPageNumber()));
     }
 

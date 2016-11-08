@@ -33,6 +33,8 @@ import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.common.ConnectionResult;
+import com.laimiux.rxnetwork.RxNetwork;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -202,9 +204,8 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
                 values.put(PresenterParams.Columns.PAGE_SIZE, Integer.parseInt(resultsQty.getSelectedItem().toString()));
                 main.presenter.setValues(values);
                 main.saveQuery(values);
-                main.presenter.query();
+                main.queryIfConnectionAvailable();
                 closeFragment();
-                main.showProgressDialog();
             }
         });
         return v;
