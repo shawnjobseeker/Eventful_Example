@@ -105,9 +105,6 @@ public class Venue implements IData {
     @SerializedName("country_abbr2")
     @Expose
     private String countryAbbr2;
-    @SerializedName("tags")
-    @Expose
-    private Tags tags;
     @SerializedName("venue_type")
     @Expose
     private String venueType;
@@ -648,18 +645,7 @@ public class Venue implements IData {
      * @return
      * The tags
      */
-    public Tags getTags() {
-        return tags;
-    }
 
-    /**
-     *
-     * @param tags
-     * The tags
-     */
-    public void setTags(Tags tags) {
-        this.tags = tags;
-    }
 
     /**
      *

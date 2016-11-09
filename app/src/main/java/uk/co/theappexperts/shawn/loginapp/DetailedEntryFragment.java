@@ -76,6 +76,10 @@ public class DetailedEntryFragment extends Fragment implements OnMapReadyCallbac
     Button imGoing;
     @BindView(R.id.links)
     RecyclerView linkView;
+    @BindView(R.id.link_text)
+    TextView linkText;
+    @BindView(R.id.event_text)
+    TextView eventText;
 
     private Unbinder unbinder;
     private String iDataClass;
@@ -134,6 +138,7 @@ public class DetailedEntryFragment extends Fragment implements OnMapReadyCallbac
                 getActivity().startActivity(intent);
             }
         });
+        main.floatingActionButton.setVisibility(View.GONE);
         return v;
     }
     public void passDetails(IData data) {
@@ -142,6 +147,8 @@ public class DetailedEntryFragment extends Fragment implements OnMapReadyCallbac
         description.setText(Html.fromHtml(nullIsEmpty(data.getDesc())));
         if (data.getLinks() != null)
         setUpLinks(data.getLinks());
+        else
+            linkText.setVisibility(View.GONE);
         if (data instanceof Performer)
             displayArtist((Performer)data);
         else if (data instanceof EventDetails)
@@ -155,18 +162,23 @@ public class DetailedEntryFragment extends Fragment implements OnMapReadyCallbac
             main.dialog.dismiss();
     }
     private void setUpLinks(Links links) {
-        linkView.setLayoutManager(new LinearLayoutManager(getContext()));
-        linkView.setAdapter(new LinkAdapter(links.getLink(), getContext()));
+        if (links.getLink() == null || links.getLink().size() == 0)
+            linkText.setVisibility(View.GONE);
+        else {
+            linkView.setLayoutManager(new LinearLayoutManager(getContext()));
+            linkView.setAdapter(new LinkAdapter(links.getLink(), getContext()));
+        }
     }
 
     private void displayArtist(Performer performer) {
-
         if (performer.getLongBio() != null && description.getText().length() < 100)
             description.setText(Html.fromHtml(nullIsEmpty(performer.getLongBio().toString())));
         eventView.setLayoutManager(new LinearLayoutManager(getContext()));
-        Events events = (Events)performer.getEvents();
-        if (events != null)
-        eventView.setAdapter(new Adapter(events.getEvent(), R.layout.row, getContext()));
+        Events events = (Events) performer.getEvents();
+        if (events != null && events.getEvent().size() > 0) {
+            eventView.setAdapter(new Adapter(events.getEvent(), R.layout.row, getContext()));
+            eventText.setVisibility(View.VISIBLE);
+        }
     }
     private void displayEvent(EventDetails event) {
         mapView.setVisibility(View.VISIBLE);
@@ -194,7 +206,9 @@ public class DetailedEntryFragment extends Fragment implements OnMapReadyCallbac
         unbinder.unbind();
     }
     private void closeFragment() {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        if (iDataClass != getString(R.string.artist))
+            ((LoginActivity)getActivity()).floatingActionButton.setVisibility(View.VISIBLE);
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.remove(this);
         transaction.commit();
     }

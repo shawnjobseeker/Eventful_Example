@@ -310,15 +310,21 @@ public class LoginActivity extends AppCompatActivity implements
                 cursor.moveToFirst();
                 String dataClass = cursor.getString(cursor.getColumnIndex(IDATA_CLASS));
                 if (dataClass != null) {
-                    if (dataClass.equals(getResources().getResourceEntryName(R.id.artist)))
+                    if (dataClass.equals(getResources().getResourceEntryName(R.id.artist))) {
                         presenter = new ArtistPresenter(this);
-                    else if (dataClass.equals(getResources().getResourceEntryName(R.id.event)))
+                        spinner.setSelection(0);
+                    }
+                    else if (dataClass.equals(getResources().getResourceEntryName(R.id.event))) {
                         presenter = new EventPresenter(this);
-                    else if (dataClass.equals(getResources().getResourceEntryName(R.id.venue)))
+                        spinner.setSelection(1);
+                    }
+                    else if (dataClass.equals(getResources().getResourceEntryName(R.id.venue))) {
                         presenter = new VenuePresenter(this);
+                        spinner.setSelection(2);
+                    }
                     presenter.setValues(cursor);
                     presenter.setPageNumber(searchPageNumber);
-                    presenter.query();
+                    queryIfConnectionAvailable();
                 }
             }
             cursor.close();
@@ -338,8 +344,7 @@ public class LoginActivity extends AppCompatActivity implements
         }
 
     }
-
-
+    // for debugging purposes on virtual tablet. Map would not populate with markers if no internet
     void setPlaceholderLocation() {
         currentLocation = new Location("");
         currentLocation.setLatitude(51);

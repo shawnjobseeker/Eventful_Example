@@ -53,6 +53,7 @@ import uk.co.theappexperts.shawn.loginapp.model.Link;
         Link link = links.get(position);
         holder.textView.setClickable(true);
         holder.textView.setText(Html.fromHtml(link.getType() + ": <a href=\"" + link.getUrl() + "\">" + link.getUrl() + "</a>"));
+        // link category type extracted from data; no API to list these categories hence un-translatable
         holder.textView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 

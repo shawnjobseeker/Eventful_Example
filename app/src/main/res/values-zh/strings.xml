@@ -63,6 +63,8 @@
     <string name="view_in_browser">在浏览器中查看</string>
     <string name="search">搜索</string>
     <string name="links">链接</string>
+    <string name="upcoming_events">将来事件</string>
+    <!-- extracted all categories from API because multi-language not supported by API-->
     <string name="categories">类别</string>
     <string name="music">音乐会</string>
     <string name="conference">会议贸易</string>

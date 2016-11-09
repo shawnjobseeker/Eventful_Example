@@ -39,7 +39,8 @@ public interface IContract {
             String msg = "";
             if (e.getMessage() != null)
                 msg = e.getMessage();
-            Log.e(e.getClass().getName(), msg + Arrays.deepToString(e.getStackTrace()));
+            Log.e(e.getClass().getName(), msg);
+            e.printStackTrace();
             Application app = ((LoginActivity)context).getApplication();
             Tracker t = ((Analytics)app).getDefaultTracker();
             t.enableExceptionReporting(true);
@@ -89,7 +90,8 @@ public interface IContract {
             String msg = "";
             if (e.getMessage() != null)
                 msg = e.getMessage();
-            Log.e(e.getClass().getName(), msg + Arrays.deepToString(e.getStackTrace()));
+            Log.e(e.getClass().getName(), msg);
+            e.printStackTrace();
             Application app = fragment.getActivity().getApplication();
             Tracker t = ((Analytics)app).getDefaultTracker();
             t.enableExceptionReporting(true);
