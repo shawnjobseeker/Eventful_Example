@@ -66,7 +66,7 @@ import uk.co.theappexperts.shawn.loginapp.model.venue.Venue;
                     newFragment.setArguments(bundle);
                     DisplayMetrics displaymetrics = new DisplayMetrics();
                     ((LoginActivity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-                    if (((float)displaymetrics.widthPixels / displaymetrics.density) < 420.0f)
+                    if (((float)displaymetrics.widthPixels / displaymetrics.density) < 620.0f)
                     transaction.replace(R.id.search_bar_view, newFragment, "Detail");
                     else
                         transaction.replace(R.id.detail_view, newFragment, "Detail");
@@ -90,7 +90,7 @@ import uk.co.theappexperts.shawn.loginapp.model.venue.Venue;
         holder.titleText.setText(title);
         String desc;
         if (item.getDesc() != null)
-                desc = (item.getDesc().length() < 80) ? item.getDesc() : item.getDesc().substring(0, 79) + "...";
+                desc = (item.getDesc().length() < 80) ? item.getDesc() : item.getDesc().substring(0, 79) + "..."; // limit content of cardview by truncating text data
         else
                 desc = "";
         holder.description.setText(desc);

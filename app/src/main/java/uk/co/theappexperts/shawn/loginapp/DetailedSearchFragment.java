@@ -104,6 +104,7 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
     private static Integer[] resultsPerPage = new Integer[]{5, 10, 20, 50, 100};
     private String searchFactor;
     private TypedArray array;
+    private boolean categoriesShown;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -113,7 +114,13 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
         calendar = Calendar.getInstance();
         searchFactor = getArguments().getString("Search");
         advancedSearch.setText(getString(R.string.detailed_search, searchFactor));
-
+        if (savedInstanceState != null) {
+            categoriesShown = savedInstanceState.getBoolean("categories_shown");
+            if (categoriesShown) {
+                categoriesBtn.setVisibility(View.GONE);
+                categoryPanel.setVisibility(View.VISIBLE);
+            }
+        }
         if (!searchFactor.equals(getString(R.string.event))) {
             categoryPanel.setVisibility(View.GONE);
             categoriesBtn.setVisibility(View.GONE);
@@ -135,6 +142,7 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
             editTo.setInputType(InputType.TYPE_NULL);
             editFrom.setOnFocusChangeListener(this);
             editTo.setOnFocusChangeListener(this);
+            // editFrom, editTo text fields to show date picker but not soft input keyboard
             editFrom.setOnClickListener(this);
             editTo.setOnClickListener(this);
         }
@@ -148,19 +156,19 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
         dialog.setOnDismissListener(this);
         setSpinnerAdapter(units, R.array.units);
         setSpinnerAdapter(dateCategories, R.array.date_categories);
-
         setSpinnerAdapter(ascDesc, R.array.asc_desc);
+        // uniform layout for all spinners
         ArrayAdapter<Integer> intAdapter = new ArrayAdapter<Integer>(getContext(), R.layout.spinner_item, resultsPerPage);
         intAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         resultsQty.setAdapter(intAdapter);
         resultsQty.setSelection(2);
 
-        categoryPanel.setVisibility(View.GONE);
         categoriesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 categoriesBtn.setVisibility(View.GONE);
                 categoryPanel.setVisibility(View.VISIBLE);
+                categoriesShown = true;
             }
         });
 
@@ -174,6 +182,7 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
             @Override
             public void onClick(View v) {
                 ContentValues values = new ContentValues();
+                // put values in database
                 if (searchFactor.equals(getString(R.string.artist))) {
                     main.presenter = new ArtistPresenter(main);
                     values.put(PresenterParams.Columns.IDATA_CLASS, getResources().getResourceEntryName(R.string.artist));
@@ -219,6 +228,7 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
             values.put(PresenterParams.Columns.LOCATION, main.currentLocation.getLatitude() + "," + main.currentLocation.getLongitude());
             values.put(PresenterParams.Columns.WITHIN, Integer.parseInt(distanceEdit.getText().toString()));
             values.put(PresenterParams.Columns.UNITS, units.getSelectedItem().toString());
+            main.locationButtonClicked = true;
         }
         main.floatingActionButton.setVisibility(View.VISIBLE);
     }
@@ -310,6 +320,12 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
         FragmentTransaction transaction = main.getSupportFragmentManager().beginTransaction();
         transaction.remove(this);
         transaction.commit();
+
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("categories_shown", categoriesShown);
+    }
 }

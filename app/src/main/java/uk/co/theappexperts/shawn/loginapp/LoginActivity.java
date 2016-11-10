@@ -119,10 +119,11 @@ public class LoginActivity extends AppCompatActivity implements
     private Drawable listIcon;
     private GoogleMap map;
     private Bundle savedInstanceState;
-    private  SupportMapFragment fragment;
+    private SupportMapFragment fragment;
     ProgressDialog dialog;
     private List<? extends IData> list;
     private int searchPageNumber;
+    boolean locationButtonClicked = false;
     private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
@@ -298,10 +299,9 @@ public class LoginActivity extends AppCompatActivity implements
             transaction.commit();
             floatingActionButton.setImageDrawable(ContextCompat.getDrawable(LoginActivity.this, android.R.drawable.ic_dialog_map));
         }
-        if (editText.getText().length() > 0) {
-            new SearchItemClick().onClick(null);
-        }
-        // get most recent advanced search state from DB
+        if (editText.getText().length() > 0)
+            new SearchItemClick().onClick(null); // redo API call when activity re-created (quick search)
+        // otherwise, get most recent advanced search state from DB
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null);
         if (cursor != null) {
@@ -432,6 +432,9 @@ public class LoginActivity extends AppCompatActivity implements
                 savedInstanceState.putDouble("latitude", currentLocation.getLatitude());
                 savedInstanceState.putDouble("longitude", currentLocation.getLongitude());
             }
+            if (editText.getText().length() == 0 && !spinner.getSelectedItem().equals(getString(R.string.artist)))
+                new LocationClick().onClick(null);
+
         } catch(SecurityException e) {
             onConnectionFailed(new ConnectionResult(ConnectionResult.SERVICE_MISSING_PERMISSION, null, getString(R.string.connection_unauthorised)));
         }
@@ -500,6 +503,7 @@ public class LoginActivity extends AppCompatActivity implements
 
         @Override
         public void onClick(View v) {
+            locationButtonClicked = true;
             if (currentLocation == null)
                 setPlaceholderLocation();
             Object item = spinner.getSelectedItem();
@@ -511,7 +515,11 @@ public class LoginActivity extends AppCompatActivity implements
                 ((EventPresenter)presenter).setLocation(currentLocation.getLatitude() + "," + currentLocation.getLongitude());
             else if ( presenter instanceof VenuePresenter)
                 ((VenuePresenter)presenter).setLocation(currentLocation.getLatitude() + "," + currentLocation.getLongitude());
-            queryIfConnectionAvailable();
+
+             queryIfConnectionAvailable();
+            // clear DB for quick search
+            SQLiteDatabase db = helper.getReadableDatabase();
+            helper.onUpgrade(db, 1, 1);
         }
     }
 
@@ -578,7 +586,10 @@ public class LoginActivity extends AppCompatActivity implements
         }
         double avgLat = sumLat / count;
         double avgLong = sumLong / count;
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 2));
+        if (locationButtonClicked)
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 12));
+        else
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 2));
     }
     private void addMarker(double lat, double lng, MarkerOptions option, Object iData) {
         String title = "";

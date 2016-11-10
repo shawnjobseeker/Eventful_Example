@@ -101,16 +101,5 @@ public interface IContract {
                     .build());
         }
     }
-    interface IView<T extends IPresenter> {
-        /**
-         * All things which view should perform
-         * call by presenter
-         */
-        public void setPresenter(T presenter);
-        public <E extends IData> void passDataAdapter(List<E> list);
-        public void passDataAdapter(IData data);
-        public void showProgressDialog();
-        public void hideProgressDialog();
-        public boolean checkInternet();
-    }
+    // no view interface, all presenters use similar views
 }

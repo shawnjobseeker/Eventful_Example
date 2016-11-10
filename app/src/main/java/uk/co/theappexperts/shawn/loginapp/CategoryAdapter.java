@@ -1,6 +1,7 @@
 package uk.co.theappexperts.shawn.loginapp;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -41,7 +42,7 @@ import uk.co.theappexperts.shawn.loginapp.model.event.Category;
         Arrays.fill(include, 0);
         this.context = context;
     }
-     static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.category)
         TextView category;
         @BindView(R.id.radio_group)
@@ -49,14 +50,16 @@ import uk.co.theappexperts.shawn.loginapp.model.event.Category;
          ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            group.setTag(category.getText().toString());
-            group.check(R.id.undecided_button);
+
         }
     }
 
     @Override
     public void onBindViewHolder(final CategoryAdapter.ViewHolder holder, final int position) {
         holder.category.setText(array.getString(position));
+        holder.group.setTag(array.getString(position));
+        SharedPreferences preferences = ((LoginActivity)context).getPreferences(Context.MODE_PRIVATE);
+        holder.group.check(preferences.getInt(holder.group.getTag().toString(), R.id.undecided_button));
         holder.group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -64,6 +67,11 @@ import uk.co.theappexperts.shawn.loginapp.model.event.Category;
                         include[position] = Category.INCLUDED;
                     else if (checkedId == R.id.exclude_button)
                         include[position] = Category.EXCLUDED;
+                // store checked radio button
+                SharedPreferences preferences = ((LoginActivity)context).getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putInt(group.getTag().toString(), checkedId);
+                editor.commit();
             }
         });
     }
@@ -89,6 +97,7 @@ import uk.co.theappexperts.shawn.loginapp.model.event.Category;
         return returnString.substring(0, returnString.length()-1);
         else
             return (returnString.length() > 0) ? returnString : null;
+         // field only accepts 'item,item,item' format
     }
 
 
