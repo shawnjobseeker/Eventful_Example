@@ -96,7 +96,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/current_location"
             android:layout_above="@+id/location_edit"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@+id/units_spinner" />
 
     </RelativeLayout>
 
