@@ -151,8 +151,7 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
             array = getResources().obtainTypedArray(R.array.venue_sort_by);
         }
         dialog = new DatePickerDialog(getContext(), 0, this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE));
-        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel), Message.obtain());
-        dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.yes), Message.obtain());
+
         dialog.setOnDismissListener(this);
         setSpinnerAdapter(units, R.array.units);
         setSpinnerAdapter(dateCategories, R.array.date_categories);
@@ -220,8 +219,10 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
         return v;
     }
     private void putLocationValues(ContentValues values) {
-        if (locationEdit.getText().length() > 0 || distanceEdit.getText().length() == 0)
+        if (locationEdit.getText().length() > 0 || distanceEdit.getText().length() == 0) {
             values.put(PresenterParams.Columns.LOCATION, locationEdit.getText().toString());
+            main.locationButtonClicked = false;
+        }
         else {
             if (main.currentLocation == null)
                 main.setPlaceholderLocation();
@@ -317,10 +318,10 @@ public class DetailedSearchFragment extends Fragment implements View.OnFocusChan
         onFocusChange(v, true);
     }
     private void closeFragment() {
+        catAdapter.reset(); // only way to reset categories
         FragmentTransaction transaction = main.getSupportFragmentManager().beginTransaction();
         transaction.remove(this);
         transaction.commit();
-
     }
 
     @Override

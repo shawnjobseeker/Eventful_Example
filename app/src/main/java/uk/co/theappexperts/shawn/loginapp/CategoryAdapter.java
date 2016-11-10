@@ -99,6 +99,12 @@ import uk.co.theappexperts.shawn.loginapp.model.event.Category;
             return (returnString.length() > 0) ? returnString : null;
          // field only accepts 'item,item,item' format
     }
+    void reset() {
+        SharedPreferences preferences = ((LoginActivity)context).getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.commit();
+    }
 
 
 }

@@ -124,6 +124,7 @@ public class LoginActivity extends AppCompatActivity implements
     private List<? extends IData> list;
     private int searchPageNumber;
     boolean locationButtonClicked = false;
+    private boolean queryPersisted = false;
     private FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
@@ -283,8 +284,8 @@ public class LoginActivity extends AppCompatActivity implements
         if (Profile.getCurrentProfile() != null)
         currentProfile = Profile.getCurrentProfile();
         updateLogin();
-        if (getSupportFragmentManager().findFragmentByTag("Search") == null)
-        floatingActionButton.bringToFront();
+        if (getSupportFragmentManager().findFragmentByTag("Search") == null && getSupportFragmentManager().findFragmentByTag("Detail") == null)
+            floatingActionButton.bringToFront();
         if (fragment == null)
          fragment = new SupportMapFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -432,8 +433,10 @@ public class LoginActivity extends AppCompatActivity implements
                 savedInstanceState.putDouble("latitude", currentLocation.getLatitude());
                 savedInstanceState.putDouble("longitude", currentLocation.getLongitude());
             }
-            if (editText.getText().length() == 0 && !spinner.getSelectedItem().equals(getString(R.string.artist)))
+            if (editText.getText().length() == 0 && !spinner.getSelectedItem().equals(getString(R.string.artist))) {
                 new LocationClick().onClick(null);
+            }
+
 
         } catch(SecurityException e) {
             onConnectionFailed(new ConnectionResult(ConnectionResult.SERVICE_MISSING_PERMISSION, null, getString(R.string.connection_unauthorised)));

@@ -138,9 +138,9 @@ public class DetailedEntryFragment extends Fragment implements OnMapReadyCallbac
                 getActivity().startActivity(intent);
             }
         });
-        main.floatingActionButton.setVisibility(View.GONE);
         return v;
     }
+
     public void passDetails(IData data) {
         this.url = data.getUrl();
         titleText.setText(Html.fromHtml(nullIsEmpty(data.getName())));
