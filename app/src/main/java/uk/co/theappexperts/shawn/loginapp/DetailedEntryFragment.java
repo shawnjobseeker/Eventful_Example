@@ -146,9 +146,7 @@ public class DetailedEntryFragment extends Fragment implements OnMapReadyCallbac
         titleText.setText(Html.fromHtml(nullIsEmpty(data.getName())));
         description.setText(Html.fromHtml(nullIsEmpty(data.getDesc())));
         if (data.getLinks() != null)
-        setUpLinks(data.getLinks());
-        else
-            linkText.setVisibility(View.GONE);
+            setUpLinks(data.getLinks());
         if (data instanceof Performer)
             displayArtist((Performer)data);
         else if (data instanceof EventDetails)
@@ -167,6 +165,7 @@ public class DetailedEntryFragment extends Fragment implements OnMapReadyCallbac
         else {
             linkView.setLayoutManager(new LinearLayoutManager(getContext()));
             linkView.setAdapter(new LinkAdapter(links.getLink(), getContext()));
+            linkText.setVisibility(View.VISIBLE);
         }
     }
 
@@ -208,7 +207,8 @@ public class DetailedEntryFragment extends Fragment implements OnMapReadyCallbac
     private void closeFragment() {
         if (iDataClass != getString(R.string.artist))
             ((LoginActivity)getActivity()).floatingActionButton.setVisibility(View.VISIBLE);
-            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        ((LoginActivity)getActivity()).detailView.setVisibility(View.GONE);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
         transaction.remove(this);
         transaction.commit();
     }

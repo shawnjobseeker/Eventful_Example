@@ -111,6 +111,8 @@ public class LoginActivity extends AppCompatActivity implements
     LinearLayout pageToggleView;
     @BindView(R.id.search_bar_view)
     RelativeLayout searchBarView;
+    @BindView(R.id.detail_view)
+    RelativeLayout detailView;
     private NavHeaderHolder holder;
     private Profile currentProfile;
     private GoogleApiClient google;
@@ -196,8 +198,8 @@ public class LoginActivity extends AppCompatActivity implements
         // initialize search view
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        if (((float)searchBarView.getWidth() / displaymetrics.density) < 420.0f && ((float)displaymetrics.widthPixels / displaymetrics.density) >= 620.0f)
-            searchBarView = (RelativeLayout)getLayoutInflater().inflate(R.layout.search_bar_view, null, false);
+        if (((float)displaymetrics.widthPixels / displaymetrics.density) < 620.0f)
+            detailView.setVisibility(View.GONE);
         button.setImageDrawable(resize(ContextCompat.getDrawable(this, android.R.drawable.ic_menu_search), 25, 25));
         locationButton.setImageDrawable(resize(ContextCompat.getDrawable(this, android.R.drawable.ic_menu_mylocation), 25, 25));
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.search_array, R.layout.spinner_item);
@@ -284,8 +286,12 @@ public class LoginActivity extends AppCompatActivity implements
         if (Profile.getCurrentProfile() != null)
         currentProfile = Profile.getCurrentProfile();
         updateLogin();
-        if (getSupportFragmentManager().findFragmentByTag("Search") == null && getSupportFragmentManager().findFragmentByTag("Detail") == null)
-            floatingActionButton.bringToFront();
+        if (getSupportFragmentManager().findFragmentByTag("Detail") == null) {
+            if (getSupportFragmentManager().findFragmentByTag("Search") == null)
+                floatingActionButton.bringToFront();
+        }
+        else
+            detailView.setVisibility(View.VISIBLE);
         if (fragment == null)
          fragment = new SupportMapFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

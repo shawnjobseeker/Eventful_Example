@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -40,6 +42,7 @@ import uk.co.theappexperts.shawn.loginapp.model.venue.Venue;
 
       class ViewHolder<E> extends RecyclerView.ViewHolder {
         E item;
+          View parent;
         @BindView(R.id.title_text)
         TextView titleText;
         @BindView(R.id.date_text)
@@ -52,8 +55,8 @@ import uk.co.theappexperts.shawn.loginapp.model.venue.Venue;
         ImageView imageView;
         public ViewHolder(View view) {
             super(view);
+            this.parent = view;
             ButterKnife.bind(this, view);
-            view.setOnClickListener(new Adapter.OnClickListener(context, (IData)item));
         }
     }
 
@@ -67,6 +70,7 @@ import uk.co.theappexperts.shawn.loginapp.model.venue.Venue;
     public void onBindViewHolder(ViewHolder holder, int position) {
         E item = list.get(position);
         holder.item = item;
+        holder.parent.setOnClickListener(new Adapter.OnClickListener(context, (IData)item));
         String title = (item.getName().length() < 50) ? item.getName() : item.getName().substring(0, 49) + "...";
         holder.titleText.setText(title);
         String desc;
@@ -111,34 +115,32 @@ import uk.co.theappexperts.shawn.loginapp.model.venue.Venue;
     static class OnClickListener implements View.OnClickListener , GoogleMap.OnInfoWindowClickListener
     {
         IData item;
-        Context context;
+        LoginActivity context;
         @Override
         public void onClick(View v) {
-            FragmentManager manager = ((LoginActivity)context).getSupportFragmentManager();
+            FragmentManager manager = context.getSupportFragmentManager();
             Fragment existingFragment = manager.findFragmentByTag("Detail");
             FragmentTransaction  transaction = manager.beginTransaction();
             if (existingFragment != null)
                 transaction.remove(existingFragment);
             Bundle bundle = new Bundle();
-            bundle.putString("IDataClass", item.getClass().getName());
+            bundle.putString("IDataClass", this.item.getClass().getName());
             bundle.putString("id", item.getId());
             DetailedEntryFragment newFragment = new DetailedEntryFragment();
             newFragment.setArguments(bundle);
             DisplayMetrics displaymetrics = new DisplayMetrics();
-            ((LoginActivity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            context.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            transaction.replace(R.id.detail_view, newFragment, "Detail");
             if (((float)displaymetrics.widthPixels / displaymetrics.density) < 620.0f)
-                transaction.replace(R.id.search_bar_view, newFragment, "Detail");
-            else
-                transaction.replace(R.id.detail_view, newFragment, "Detail");
+                context.detailView.setVisibility(View.VISIBLE);
             transaction.commit();
         }
-        public OnClickListener(Context context, IData item) {
-            this.context = context;
-            this.item = item;
-        }
         public OnClickListener(Context context) {
-            // for onInfoWindowClick
-            this.context = context;
+            this.context = (LoginActivity)context;
+        }
+        public OnClickListener(Context context, IData item) {
+            this.context = (LoginActivity)context;
+            this.item = item;
         }
 
         @Override

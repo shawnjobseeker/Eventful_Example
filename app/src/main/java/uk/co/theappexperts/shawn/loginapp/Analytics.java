@@ -22,11 +22,6 @@ public class Analytics extends Application {
      * @return tracker
      */
     // Analytics with MultiDex http://stackoverflow.com/questions/34094808/how-to-use-google-analytics-in-android-app-with-over-65k-methods
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
-    }
     synchronized public Tracker getDefaultTracker() {
         if (mTracker == null) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
@@ -35,4 +30,10 @@ public class Analytics extends Application {
         }
         return mTracker;
     }
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
 }
