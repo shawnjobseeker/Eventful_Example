@@ -433,8 +433,11 @@ public class LoginActivity extends AppCompatActivity implements
                 savedInstanceState.putDouble("latitude", currentLocation.getLatitude());
                 savedInstanceState.putDouble("longitude", currentLocation.getLongitude());
             }
-            if (editText.getText().length() == 0 && !spinner.getSelectedItem().equals(getString(R.string.artist))) {
-                new LocationClick().onClick(null);
+            if (editText.getText().length() == 0 && !spinner.getSelectedItem().equals(getString(R.string.artist)) ) {
+                SQLiteDatabase db = helper.getReadableDatabase();
+                Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null);
+                if (cursor == null || cursor.getCount() == 0)
+                    new LocationClick().onClick(null);
             }
 
 
@@ -589,17 +592,21 @@ public class LoginActivity extends AppCompatActivity implements
         }
         double avgLat = sumLat / count;
         double avgLong = sumLong / count;
+        map.setInfoWindowAdapter(new InfoWindow(this));
+        map.setOnInfoWindowClickListener(new Adapter.OnClickListener(this));
         if (locationButtonClicked)
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 12));
         else
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(avgLat, avgLong), 2));
     }
     private void addMarker(double lat, double lng, MarkerOptions option, Object iData) {
-        String title = "";
-        if (iData instanceof IData)
-            title = ((IData)iData).getName();
+        String title = "", description = "";
+        if (iData instanceof IData) {
+            title = ((IData) iData).getName();
+            description = ((IData) iData).getDesc();
+        }
         LatLng mark = new LatLng(lat, lng);
-        map.addMarker(option.position(mark).title(title));
+        map.addMarker(option.position(mark).title(title).snippet(description)).setTag(iData);
     }
      void showProgressDialog() {
          if (dialog == null)

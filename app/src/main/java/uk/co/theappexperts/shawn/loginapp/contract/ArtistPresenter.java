@@ -11,6 +11,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import uk.co.theappexperts.shawn.loginapp.LoginActivity;
 import uk.co.theappexperts.shawn.loginapp.model.artist.Performer;
+import uk.co.theappexperts.shawn.loginapp.model.artist.Performers;
 import uk.co.theappexperts.shawn.loginapp.model.artist.Search;
 
 import static uk.co.theappexperts.shawn.loginapp.connect.Constants.API_KEY;
@@ -35,9 +36,11 @@ public class ArtistPresenter extends IContract.IPresenter implements   Observer<
 
     @Override
     public void onNext(Search artists) {
-        List<Performer> performers = artists.getPerformers().getPerformer();
-        ((LoginActivity)context).passDataAdapter(performers, Integer.parseInt(artists.getPageCount()), Integer.parseInt(artists.getPageNumber()));
-
+        Performers performers = artists.getPerformers();
+        if (performers != null)
+            ((LoginActivity) context).passDataAdapter(performers.getPerformer(), Integer.parseInt(artists.getPageCount()), Integer.parseInt(artists.getPageNumber()));
+        else
+            ((LoginActivity)context).passDataAdapter(null, 0, 0);
     }
     public void query() {
         api.queryArtist(API_KEY, query, sortOrder, sortDirection, pageSize, pageNumber).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())

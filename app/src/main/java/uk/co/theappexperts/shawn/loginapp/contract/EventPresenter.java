@@ -17,6 +17,7 @@ import rx.schedulers.Schedulers;
 import uk.co.theappexperts.shawn.loginapp.LoginActivity;
 import uk.co.theappexperts.shawn.loginapp.PresenterParams.Columns;
 import uk.co.theappexperts.shawn.loginapp.model.event.Event;
+import uk.co.theappexperts.shawn.loginapp.model.event.Events;
 import uk.co.theappexperts.shawn.loginapp.model.event.Search;
 
 import static uk.co.theappexperts.shawn.loginapp.connect.Constants.API_KEY;
@@ -40,9 +41,12 @@ public class EventPresenter extends IContract.IPresenter implements Observer<Sea
     private String includeCategories;
     private String excludeCategories;
     @Override
-    public void onNext(Search events) {
-        List<Event> performers = events.getEvents().getEvent();
-        ((LoginActivity)context).passDataAdapter(performers, Integer.parseInt(events.getPageCount()), Integer.parseInt(events.getPageNumber()));
+    public void onNext(Search search) {
+        Events events = search.getEvents();
+        if (events != null)
+        ((LoginActivity)context).passDataAdapter(events.getEvent(), Integer.parseInt(search.getPageCount()), Integer.parseInt(search.getPageNumber()));
+        else
+            ((LoginActivity)context).passDataAdapter(null, 0, 0);
     }
 
     @Override

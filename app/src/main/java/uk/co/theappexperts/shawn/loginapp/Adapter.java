@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Marker;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -51,28 +53,7 @@ import uk.co.theappexperts.shawn.loginapp.model.venue.Venue;
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FragmentManager manager = ((LoginActivity)context).getSupportFragmentManager();
-                    Fragment existingFragment = manager.findFragmentByTag("Detail");
-                    FragmentTransaction  transaction = manager.beginTransaction();
-                    if (existingFragment != null)
-                        transaction.remove(existingFragment);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("IDataClass", item.getClass().getName());
-                    bundle.putString("id", ((IData)item).getId());
-                    DetailedEntryFragment newFragment = new DetailedEntryFragment();
-                    newFragment.setArguments(bundle);
-                    DisplayMetrics displaymetrics = new DisplayMetrics();
-                    ((LoginActivity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-                    if (((float)displaymetrics.widthPixels / displaymetrics.density) < 620.0f)
-                    transaction.replace(R.id.search_bar_view, newFragment, "Detail");
-                    else
-                        transaction.replace(R.id.detail_view, newFragment, "Detail");
-                    transaction.commit();
-                }
-            });
+            view.setOnClickListener(new Adapter.OnClickListener(context, (IData)item));
         }
     }
 
@@ -125,5 +106,45 @@ import uk.co.theappexperts.shawn.loginapp.model.venue.Venue;
     @Override
     public int getItemCount() {
         return (list == null) ? 0 : list.size();
+    }
+
+    static class OnClickListener implements View.OnClickListener , GoogleMap.OnInfoWindowClickListener
+    {
+        IData item;
+        Context context;
+        @Override
+        public void onClick(View v) {
+            FragmentManager manager = ((LoginActivity)context).getSupportFragmentManager();
+            Fragment existingFragment = manager.findFragmentByTag("Detail");
+            FragmentTransaction  transaction = manager.beginTransaction();
+            if (existingFragment != null)
+                transaction.remove(existingFragment);
+            Bundle bundle = new Bundle();
+            bundle.putString("IDataClass", item.getClass().getName());
+            bundle.putString("id", item.getId());
+            DetailedEntryFragment newFragment = new DetailedEntryFragment();
+            newFragment.setArguments(bundle);
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            ((LoginActivity) context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            if (((float)displaymetrics.widthPixels / displaymetrics.density) < 620.0f)
+                transaction.replace(R.id.search_bar_view, newFragment, "Detail");
+            else
+                transaction.replace(R.id.detail_view, newFragment, "Detail");
+            transaction.commit();
+        }
+        public OnClickListener(Context context, IData item) {
+            this.context = context;
+            this.item = item;
+        }
+        public OnClickListener(Context context) {
+            // for onInfoWindowClick
+            this.context = context;
+        }
+
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+            this.item = (IData)marker.getTag();
+            onClick(null);
+        }
     }
 }
