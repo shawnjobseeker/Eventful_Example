@@ -8,7 +8,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:177192937775:android:58518c1bccc12fc5",
         "android_client_info": {
-          "package_name": "uk.co.theappexperts.shawn.loginapp"
+          "package_name": "uk.co.example.shawn.loginapp"
         }
       },
       "oauth_client": [],

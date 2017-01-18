@@ -7,10 +7,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="uk.co.theappexperts.shawn.loginapp.LoginActivity"
+    tools:context="uk.co.example.shawn.loginapp.LoginActivity"
     tools:showIn="@layout/app_bar_main"
     android:background="@android:color/background_light">
-<uk.co.theappexperts.shawn.loginapp.PageToggleView
+<uk.co.example.shawn.loginapp.PageToggleView
     android:layout_height="wrap_content" android:layout_width="wrap_content"
     android:orientation="horizontal"
     android:id="@+id/page_toggle_view"
